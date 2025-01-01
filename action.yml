@@ -1,8 +1,8 @@
 name: "AutoIndex PDFs in README"
 description: "Automatically update README.md with links to PDFs in the repository."
 inputs:
-  base_url:
-    description: "Base URL for PDF links"
+  year:
+    description: "The year to use in the README."
     required: true
 outputs: {}
 runs:
@@ -17,3 +17,5 @@ runs:
     - name: Run Script
       shell: bash
       run: autoindex.sh
+      env:
+        YEAR: ${{ inputs.year }}
