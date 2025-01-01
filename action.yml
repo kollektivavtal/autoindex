@@ -16,4 +16,4 @@ runs:
 
     - name: Run Script
       shell: bash
-      run: ./entrypoint.sh
+      run: autoindex.sh
