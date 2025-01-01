@@ -1,0 +1,13 @@
+name: "AutoIndex PDFs in README"
+description: "Automatically update README.md with links to PDFs in the repository."
+inputs:
+  base_url:
+    description: "Base URL for PDF links"
+    required: true
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    - name: Run Script
+      shell: bash
+      run: ./entrypoint.sh
