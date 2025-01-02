@@ -17,10 +17,25 @@ permalink: "/{{ agreement.slug }}/index.html"
 
   <body>
 
-    <nav>
-      <a href="/">
-        Kollektivavtalsarkiv
-      </a>
+    {% include "nav.html" %}
+
+    <nav aria-label="Brödsmulor">
+      <ol>
+
+        <li>
+          <a href="https://kollektivavtal.github.io/">
+            🏠
+          </a>
+        </li>
+
+        <li>
+          <a href="/">{{ year }}</a>
+        </li>
+
+        <li>
+          <a href="/{{ agreement.slug }}">{{ agreement.name }}</a>
+        </li>
+      </ol>
     </nav>
 
     <header>
