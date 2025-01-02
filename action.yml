@@ -37,6 +37,8 @@ runs:
     - run: yarn build
       shell: bash
       working-directory: ${{ github.action_path }}
+      env:
+        YEAR: ${{ inputs.year }}
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
