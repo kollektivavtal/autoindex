@@ -55,11 +55,10 @@ export default async function(eleventyConfig) {
     return [...agreements.values()]
   })
 
-  let pathPrefix = "/"
+  const pathPrefix = `/${process.env.YEAR}/`
   let outputDir = "_site"
 
   if (process.env.ELEVENTY_ENV !== 'production') {
-    pathPrefix = `/${process.env.YEAR}/`
     outputDir = `_site/${process.env.YEAR}`
   }
 
