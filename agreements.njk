@@ -20,15 +20,32 @@ permalink: "/{{ agreement.slug }}/index.html"
       {{ agreement.name }} {{year}}
     </h1>
 
-    <ol>
-      {% for document in agreement.documents %}
-        <li>
-          <a href="/{{ document.filename }}">
-            {{ document.basename }}
-          </a>
-        </li>
-      {% endfor %}
-    </ol>
+    <table>
+      <thead>
+        <th></th>
+        <th>Namn</th>
+      </thead>
+
+      <tbody>
+        {% for document in agreement.documents %}
+          <tr>
+            <td>
+              <img
+                alt=""
+                src="/{{ document.thumbnails.w64 }}"
+              />
+            </td>
+
+            <td>
+              <a href="/{{ document.filename }}">
+                {{ document.basename }}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
 
   </body>
 </html>
