@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="sv">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Kollektivavtalsarkiv {{year}}</title>
+  </head>
+
+  <body>
+
+    <h1>
+      Kollektivavtalsarkiv {{year}}
+    </h1>
+
+    <p>
+      <a href="/">
+        Andra år
+      </a>
+    </p>
+
+    <ol>
+      {% for pdf in pdfs %}
+        <li>
+          <a href="/{{ year }}/{{ pdf.filename }}">
+            {{ pdf.basename }}
+          </a>
+        </li>
+      {% endfor %}
+    </ol>
+
+  </body>
+</html>
