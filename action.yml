@@ -23,6 +23,9 @@ runs:
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
 
+    - run: cd ${{ github.action_path }}
+      shell: bash
+
     - run: corepack enable
       shell: bash
 
