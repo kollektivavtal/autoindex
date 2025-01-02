@@ -1,9 +1,13 @@
+{% from "thumbnail.njk" import thumbnail %}
+{% from "agreements.njk" import agreementsTableLink %}
+{% from "breadcrumbs.njk" import breadcrumbs %}
+
 <!doctype html>
 <html lang="sv">
 
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://kollektivavtal.github.io/style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <title>Kollektivavtalsarkiv {{year}}</title>
   </head>
 
@@ -11,20 +15,10 @@
 
     {% include "nav.html" %}
 
-    <nav aria-label="Brödsmulor">
-      <ol>
-
-        <li>
-          <a href="https://kollektivavtal.github.io/">
-            🏠
-          </a>
-        </li>
-
-        <li>
-          <a href="/">{{ year }}</a>
-        </li>
-      </ol>
-    </nav>
+    {{ breadcrumbs([
+      { url: "https://kollektivavtal.github.io/", text: "🏠" },
+      { url: "/", text: year }
+    ]) }}
 
     <header>
       <h1>
@@ -32,31 +26,28 @@
       </h1>
     </header>
 
-    <table>
+    <table class="Agreements">
       <caption>
         Avtal
       </caption>
 
-      <thead>
-        <th></th>
-        <th>Namn</th>
+      <thead class="sr-only">
+        <tr>
+          <th></th>
+          <th>Namn</th>
+        </tr>
       </thead>
 
       <tbody>
 
         {% for agreement in collections.agreements %}
-          <tr>
-            <td>
-              <img
-                alt=""
-                src="{{ agreement.documents[0].thumbnails.w64 }}"
-              />
+          <tr class="Agreements__row">
+            <td class="Agreements__cell--thumbnail">
+              {{ thumbnail("", agreement.documents[0].thumbnails.w32) }}
             </td>
 
-            <td>
-              <a href="/{{ agreement.slug }}">
-                {{ agreement.name }}
-              </a>
+            <td class="Agreements__cell--name">
+              {{ agreementsTableLink(agreement) }}
             </td>
           </tr>
         {% endfor %}

@@ -1,0 +1,9 @@
+{%- macro agreementsTableLink(agreement) -%}
+  <div class="AgreementsTableLink">
+    <a
+      class="AgreementsTableLink__link"
+      href="/{{ agreement.slug }}">
+      {{ agreement.name }}
+    </a>
+  </div>
+{%- endmacro -%}
