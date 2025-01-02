@@ -19,10 +19,10 @@
     </p>
 
     <ol>
-      {% for pdf in pdfs %}
+      {% for agreement in collections.agreements %}
         <li>
-          <a href="/{{ year }}/{{ pdf.filename }}">
-            {{ pdf.basename }}
+          <a href="/{{ agreement.slug }}">
+            {{ agreement.name }}
           </a>
         </li>
       {% endfor %}
