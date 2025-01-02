@@ -4,6 +4,8 @@ import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 
 
 export default async function(eleventyConfig) {
+  eleventyConfig.addPassthroughCopy('*.pdf')
+
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin,{
     // baseHref: eleventyConfig.pathPrefix,
   });
