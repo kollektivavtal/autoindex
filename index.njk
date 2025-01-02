@@ -3,14 +3,19 @@
 
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/style.css">
     <title>Kollektivavtalsarkiv {{year}}</title>
   </head>
 
   <body>
 
-    <h1>
-      Kollektivavtalsarkiv {{year}}
-    </h1>
+    {% include "nav.html" %}
+
+    <header>
+      <h1>
+        Kollektivavtalsarkiv {{year}}
+      </h1>
+    </header>
 
     <p>
       <a href="/">
