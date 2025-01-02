@@ -3,7 +3,7 @@
 
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://kollektivavtal.github.io/style.css" />
     <title>Kollektivavtalsarkiv {{year}}</title>
   </head>
 
@@ -17,12 +17,6 @@
       </h1>
     </header>
 
-    <p>
-      <a href="/">
-        Andra år
-      </a>
-    </p>
-
     <table>
       <thead>
         <th></th>
@@ -30,6 +24,10 @@
       </thead>
 
       <tbody>
+        <caption>
+          Avtal
+        </caption>
+
         {% for agreement in collections.agreements %}
           <tr>
             <td>
