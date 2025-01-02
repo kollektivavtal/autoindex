@@ -18,15 +18,32 @@
       </a>
     </p>
 
-    <ol>
-      {% for agreement in collections.agreements %}
-        <li>
-          <a href="/{{ agreement.slug }}">
-            {{ agreement.name }}
-          </a>
-        </li>
-      {% endfor %}
-    </ol>
+    <table>
+      <thead>
+        <th></th>
+        <th>Namn</th>
+      </thead>
+
+      <tbody>
+        {% for agreement in collections.agreements %}
+          <tr>
+            <td>
+              <img
+                alt=""
+                src="{{ agreement.documents[0].thumbnails.w64 }}"
+              />
+            </td>
+
+            <td>
+              <a href="/{{ agreement.slug }}">
+                {{ agreement.name }}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
 
   </body>
 </html>
