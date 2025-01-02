@@ -1,0 +1,35 @@
+---
+pagination:
+  data: collections.agreements
+  size: 1
+  alias: agreement
+permalink: "/{{ agreement.slug }}/index.html"
+---
+
+<!doctype html>
+<html lang="sv">
+
+  <head>
+    <meta charset="utf-8">
+    <title>{{ agreement.name }} {{year}}</title>
+  </head>
+
+  <body>
+
+    <h1>
+      {{ agreement.name }} {{year}}
+    </h1>
+
+    <ol>
+      {% for document in agreement.documents %}
+        <li>
+          <a href="/{{ document.filename }}">
+            {{ document.basename }}
+          </a>
+        </li>
+      {% endfor %}
+    </ol>
+
+  </body>
+</html>
+

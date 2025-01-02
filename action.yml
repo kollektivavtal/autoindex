@@ -38,6 +38,7 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
+        ELEVENTY_ENV: production
         YEAR: ${{ inputs.year }}
 
     - name: Deploy
