@@ -8,10 +8,10 @@ echo "<!doctype html>" >> "$index_html"
 echo '<html lang="en" >' >> "$index_html"
 echo ' <head>' >> "$index_html"
 echo '  <meta charset="utf-8">' >> "$index_html"
-echo '  <title>Kollektivavtal</title>' >> "$index_html"
+echo "  <title>Kollektivavtal ${YEAR}</title>" >> "$index_html"
 echo ' </head>' >> "$index_html"
 echo ' <body>' >> "$index_html"
-echo '  <h1>Kollektivavtal</h1>' >> "$index_html"
+echo "  <h1>Kollektivavtal ${YEAR}</h1>" >> "$index_html"
 echo '  <ul>' >> "$index_html"
 
 while IFS= read -r -d '' pdf; do

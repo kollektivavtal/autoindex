@@ -1,8 +1,11 @@
 name: "AutoIndex PDFs in README"
 description: "Automatically update README.md with links to PDFs in the repository."
 inputs:
+  github_token:
+    description: "The GitHub token to use for deployment."
+    required: true
   year:
-    description: "The year to use in the README."
+    description: "The year the PDFs are for."
     required: true
 outputs: {}
 runs:
@@ -23,6 +26,6 @@ runs:
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ inputs.github_token }}
         publish_dir: ./
         force_orphan: true
