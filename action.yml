@@ -30,15 +30,13 @@ runs:
       with:
         node-version: "20.x"
 
-    - run:
-        cd ${{ github.action_path }}
-        yarn install
+    - run: yarn install
       shell: bash
+      working-directory: ${{ github.action_path }}
 
-    - run: |
-        cd ${{ github.action_path }}
-        yarn build
+    - run: yarn build
       shell: bash
+      working-directory: ${{ github.action_path }}
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
