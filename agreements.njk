@@ -6,12 +6,15 @@ pagination:
 permalink: "/{{ agreement.slug }}/index.html"
 ---
 
+{% from "thumbnail.njk" import thumbnail %}
+{% from "breadcrumbs.njk" import breadcrumbs %}
+
 <!doctype html>
 <html lang="sv">
 
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://kollektivavtal.github.io/style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <title>{{ agreement.name }} {{year}}</title>
   </head>
 
@@ -19,24 +22,11 @@ permalink: "/{{ agreement.slug }}/index.html"
 
     {% include "nav.html" %}
 
-    <nav aria-label="Brödsmulor">
-      <ol>
-
-        <li>
-          <a href="https://kollektivavtal.github.io/">
-            🏠
-          </a>
-        </li>
-
-        <li>
-          <a href="/">{{ year }}</a>
-        </li>
-
-        <li>
-          <a href="/{{ agreement.slug }}">{{ agreement.name }}</a>
-        </li>
-      </ol>
-    </nav>
+    {{ breadcrumbs([
+      { url: "https://kollektivavtal.github.io/", text: "🏠" },
+      { url: "/", text: year },
+      { url: "/{{ agreement.slug }}", text: agreement.name }
+    ]) }}
 
     <header>
       <h1>
@@ -59,10 +49,7 @@ permalink: "/{{ agreement.slug }}/index.html"
         {% for document in agreement.documents %}
           <tr>
             <td>
-              <img
-                alt=""
-                src="/{{ document.thumbnails.w64 }}"
-              />
+              {{ thumbnail("", "/" ~ document.thumbnails.w64) }}
             </td>
 
             <td>
