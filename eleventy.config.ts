@@ -35,6 +35,13 @@ export function parseFilename(filename: string): ParseResult {
     documentName = emDashMatches[2];
   }
 
+  const rankMatches = basename.match(/^([^\[]+) \[(\d+)\] (.+)$/);
+  if (rankMatches) {
+    agreementName = rankMatches[1];
+    documentRank = parseInt(rankMatches[2], 10);
+    documentName = rankMatches[3];
+  }
+
   return {
     agreementName,
     documentName,
