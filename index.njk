@@ -1,25 +1,21 @@
 {% extends "left-right.njk" %}
-
 {% from "thumbnail.njk" import thumbnail %}
 {% from "agreements.njk" import agreementsTableLink %}
 {% from "breadcrumbs.njk" import breadcrumbs %}
 
 {% block left %}
-
-  <div class="flex flex-col space-y-4 items-center">
+  <div class="flex flex-col items-center space-y-4">
     {{ breadcrumbs([ { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" } ]) }}
 
     <header>
-      <h1 class="text-xl">
-        Kollektivavtalsarkivet {{ year }}
-      </h1>
+      <h1 class="text-xl">Kollektivavtalsarkivet {{ year }}</h1>
     </header>
   </div>
 {% endblock %}
 
 {% block right %}
   <table class="">
-    <caption class="w-min text-xl font-semibold mb-4">
+    <caption class="mb-4 w-min text-xl font-semibold">
       Avtal
     </caption>
 
@@ -31,25 +27,24 @@
     </thead>
 
     <tbody>
-
       {% for agreement in collections.agreements %}
         <tr>
           <td>
-            <div class="aspect-[707/1000] shrink-0 border-slate-200 border-2">
-              <img alt="{{ alt }}" src="{{ agreement.documents[0].thumbnails.w64 }}">
+            <div class="aspect-[707/1000] shrink-0 border-2 border-slate-200">
+              <img
+                alt="{{ alt }}"
+                src="{{ agreement.documents[0].thumbnails.w64 }}"
+              />
             </div>
           </td>
 
           <td>
-            <a
-              class="ml-4 text-sky-600 underline"
-              href="/{{ agreement.slug }}">
+            <a class="ml-4 text-sky-600 underline" href="/{{ agreement.slug }}">
               {{ agreement.name }}
             </a>
           </td>
         </tr>
       {% endfor %}
     </tbody>
-
   </table>
 {% endblock %}

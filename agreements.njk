@@ -7,31 +7,28 @@ permalink: "/{{ agreement.slug }}/index.html"
 ---
 
 {% extends "left-right.njk" %}
-
 {% from "thumbnail.njk" import thumbnail %}
 {% from "agreements.njk" import agreementsTableLink %}
 {% from "breadcrumbs.njk" import breadcrumbs %}
 
 {% block left %}
-
-  <div class="flex flex-col space-y-4 items-center">
-    {{ breadcrumbs([
-      { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" },
-      { url: "/", text: year }
-    ]) }}
+  <div class="flex flex-col items-center space-y-4">
+    {{
+      breadcrumbs([
+        { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" },
+        { url: "/", text: year }
+      ])
+    }}
 
     <header>
-      <h1 class="text-xl">
-        {{ agreement.name }} {{ year }}
-      </h1>
+      <h1 class="text-xl">{{ agreement.name }} {{ year }}</h1>
     </header>
   </div>
 {% endblock %}
 
 {% block right %}
-
   <table>
-    <caption class="w-min text-xl font-bold mb-4">
+    <caption class="mb-4 w-min text-xl font-bold">
       Dokument
     </caption>
 
@@ -44,29 +41,25 @@ permalink: "/{{ agreement.slug }}/index.html"
       {% for document in agreement.documents %}
         <tr>
           <td>
-            <div class="aspect-[707/1000] shrink-0 border-slate-200 border-2">
-              <img alt="{{ alt }}" src="/{{ document.thumbnails.w64 }}">
+            <div class="aspect-[707/1000] shrink-0 border-2 border-slate-200">
+              <img alt="{{ alt }}" src="/{{ document.thumbnails.w64 }}" />
             </div>
           </td>
 
           <td>
-            <div class="flex flex-col ml-4">
-              <a
-                class="text-sky-600 underline"
-                href="/{{ document.filename }}">
+            <div class="ml-4 flex flex-col">
+              <a class="text-sky-600 underline" href="/{{ document.filename }}">
                 {{ document.basename }}
               </a>
-              <span class="mt-1 text-sm leading-6 text-gray-700 max-w-full overflow-hidden">
-                PDF,
-                {{ (document.bytes / 1024).toFixed(2) }} KB
+              <span
+                class="mt-1 max-w-full overflow-hidden text-sm leading-6 text-gray-700"
+              >
+                PDF, {{ (document.bytes / 1024).toFixed(2) }} KB
               </span>
             </div>
           </td>
         </tr>
       {% endfor %}
     </tbody>
-
   </table>
-
-
 {% endblock %}
