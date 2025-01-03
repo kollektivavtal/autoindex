@@ -8,7 +8,8 @@
     "start": "npm-run-all -p dev:css dev:11ty",
     "dev:11ty": "npx tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts --serve",
     "dev:css": "tailwindcss -c tailwind.config.ts -i tailwind.css -o _site/2020/tailwind.css --watch --postcss",
-    "build": "npx tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts",
+    "build": "npm-run-all build:11ty build:css",
+    "build:11ty": "npx tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts",
     "build:css": "yarn tailwindcss -c tailwind.config.ts -i tailwind.css -o _site/tailwind.css --postcss"
   },
   "dependencies": {
