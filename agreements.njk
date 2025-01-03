@@ -6,63 +6,56 @@ pagination:
 permalink: "/{{ agreement.slug }}/index.html"
 ---
 
+{% extends "left-right.njk" %}
+
 {% from "thumbnail.njk" import thumbnail %}
+{% from "agreements.njk" import agreementsTableLink %}
 {% from "breadcrumbs.njk" import breadcrumbs %}
 
-<!doctype html>
-<html lang="sv">
+{% block left %}
 
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/style.css" />
-    <title>{{ agreement.name }} {{year}}</title>
-  </head>
-
-  <body>
-
-    {% include "nav.html" %}
-
+  <div class="flex flex-col space-y-4 items-center">
     {{ breadcrumbs([
-      { url: "https://kollektivavtal.github.io/", text: "🏠" },
-      { url: "/", text: year },
-      { url: "/{{ agreement.slug }}", text: agreement.name }
+      { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" },
+      { url: "/", text: year }
     ]) }}
 
     <header>
-      <h1>
-        {{ agreement.name }} {{year}}
-      </h1>
+      <h1 class="font-mono text-xl">
+        {{ agreement.name }} {{ year }}
     </header>
+  </div>
+{% endblock %}
 
-    <table>
+{% block right %}
 
-      <caption>
-        Dokument
-      </caption>
+  <table>
+    <caption>
+      Dokument
+    </caption>
 
-      <thead>
-        <th></th>
-        <th>Namn</th>
-      </thead>
+    <thead>
+      <th></th>
+      <th>Namn</th>
+    </thead>
 
-      <tbody>
-        {% for document in agreement.documents %}
-          <tr>
-            <td>
-              {{ thumbnail("", "/" ~ document.thumbnails.w64) }}
-            </td>
+    <tbody>
+      {% for document in agreement.documents %}
+        <tr>
+          <td>
+            {{ thumbnail("", "/" ~ document.thumbnails.w64) }}
+          </td>
 
-            <td>
-              <a href="/{{ document.filename }}">
-                {{ document.basename }}
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
+          <td>
+            <a href="/{{ document.filename }}">
+              {{ document.basename }}
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
 
-    </table>
+  </table>
 
-  </body>
-</html>
 
+{% endblock %}

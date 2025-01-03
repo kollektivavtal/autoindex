@@ -1,59 +1,49 @@
+{% extends "left-right.njk" %}
+
 {% from "thumbnail.njk" import thumbnail %}
 {% from "agreements.njk" import agreementsTableLink %}
 {% from "breadcrumbs.njk" import breadcrumbs %}
 
-<!doctype html>
-<html lang="sv">
+{% block left %}
 
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/style.css" />
-    <title>Kollektivavtalsarkiv {{year}}</title>
-  </head>
-
-  <body>
-
-    {% include "nav.html" %}
-
-    {{ breadcrumbs([
-      { url: "https://kollektivavtal.github.io/", text: "🏠" },
-      { url: "/", text: year }
-    ]) }}
+  <div class="flex flex-col space-y-4 items-center">
+    {{ breadcrumbs([ { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" } ]) }}
 
     <header>
-      <h1>
-        Kollektivavtalsarkiv {{year}}
+      <h1 class="font-mono text-xl">
+        Kollektivavtalsarkivet {{ year }}
       </h1>
     </header>
+  </div>
+{% endblock %}
 
-    <table class="Agreements">
-      <caption>
-        Avtal
-      </caption>
+{% block right %}
+  <table class="Agreements">
+    <caption>
+      Avtal
+    </caption>
 
-      <thead class="sr-only">
-        <tr>
-          <th></th>
-          <th>Namn</th>
+    <thead class="sr-only">
+      <tr>
+        <th></th>
+        <th>Namn</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for agreement in collections.agreements %}
+        <tr class="Agreements__row">
+          <td class="Agreements__cell--thumbnail">
+            {{ thumbnail("", agreement.documents[0].thumbnails.w32) }}
+          </td>
+
+          <td class="Agreements__cell--name">
+            {{ agreementsTableLink(agreement) }}
+          </td>
         </tr>
-      </thead>
+      {% endfor %}
+    </tbody>
 
-      <tbody>
-
-        {% for agreement in collections.agreements %}
-          <tr class="Agreements__row">
-            <td class="Agreements__cell--thumbnail">
-              {{ thumbnail("", agreement.documents[0].thumbnails.w32) }}
-            </td>
-
-            <td class="Agreements__cell--name">
-              {{ agreementsTableLink(agreement) }}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-
-  </body>
-</html>
+  </table>
+{% endblock %}
