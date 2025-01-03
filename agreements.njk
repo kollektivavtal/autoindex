@@ -30,11 +30,11 @@ permalink: "/{{ agreement.slug }}/index.html"
 {% block right %}
 
   <table>
-    <caption>
+    <caption class="w-min text-lg font-mono font-bold mb-4">
       Dokument
     </caption>
 
-    <thead>
+    <thead class="sr-only">
       <th></th>
       <th>Namn</th>
     </thead>
@@ -43,13 +43,23 @@ permalink: "/{{ agreement.slug }}/index.html"
       {% for document in agreement.documents %}
         <tr>
           <td>
-            {{ thumbnail("", "/" ~ document.thumbnails.w64) }}
+            <div class="aspect-[707/1000] shrink-0 border-slate-200 border-2">
+              <img alt="{{ alt }}" src="/{{ document.thumbnails.w64 }}">
+            </div>
           </td>
 
           <td>
-            <a href="/{{ document.filename }}">
-              {{ document.basename }}
-            </a>
+            <div class="flex flex-col ml-4">
+              <a
+                class="font-mono text-blue-600 underline"
+                href="/{{ document.filename }}">
+                {{ document.basename }}
+              </a>
+              <span class="mt-1 text-sm leading-6 text-gray-700 max-w-full overflow-hidden font-mono">
+                PDF,
+                {{ (document.bytes / 1024).toFixed(2) }} KB
+              </span>
+            </div>
           </td>
         </tr>
       {% endfor %}

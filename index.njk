@@ -18,8 +18,8 @@
 {% endblock %}
 
 {% block right %}
-  <table class="Agreements">
-    <caption>
+  <table class="">
+    <caption class="w-min text-lg font-mono font-bold mb-4">
       Avtal
     </caption>
 
@@ -33,13 +33,19 @@
     <tbody>
 
       {% for agreement in collections.agreements %}
-        <tr class="Agreements__row">
-          <td class="Agreements__cell--thumbnail">
-            {{ thumbnail("", agreement.documents[0].thumbnails.w32) }}
+        <tr>
+          <td>
+            <div class="aspect-[707/1000] shrink-0 border-slate-200 border-2">
+              <img alt="{{ alt }}" src="{{ agreement.documents[0].thumbnails.w64 }}">
+            </div>
           </td>
 
-          <td class="Agreements__cell--name">
-            {{ agreementsTableLink(agreement) }}
+          <td>
+            <a
+              class="ml-4 font-mono text-blue-600 underline"
+              href="/{{ agreement.slug }}">
+              {{ agreement.name }}
+            </a>
           </td>
         </tr>
       {% endfor %}
