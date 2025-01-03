@@ -112,7 +112,7 @@ export default async function (eleventyConfig) {
 
     await Promise.all(
       pdfs.map(async (item) => {
-        const parseResult = parseFilename(item.basename);
+        const parseResult = parseFilename(item.filename);
         let agreement = agreements.get(parseResult.agreementName);
         if (!agreement) {
           const name = parseResult.agreementName;
