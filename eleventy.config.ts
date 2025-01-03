@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import path from "path";
+import path, { parse } from "path";
 import sharp from "sharp";
 import { fromPath } from "pdf2pic";
 
@@ -13,6 +13,7 @@ type Document = {
   name: string;
   filename: string;
   bytes: number;
+  rank: number;
   thumbnails: Record<string, string>;
 };
 
@@ -35,7 +36,7 @@ export function parseFilename(filename: string): ParseResult {
     documentName = emDashMatches[2];
   }
 
-  const rankMatches = basename.match(/^([^\[]+) \[(\d+)\] (.+)$/);
+  const rankMatches = basename.match(/^([^\[]+) \((\d+)\) (.+)$/);
   if (rankMatches) {
     agreementName = rankMatches[1];
     documentRank = parseInt(rankMatches[2], 10);
@@ -101,12 +102,9 @@ export default async function (eleventyConfig) {
       .map((file) => {
         const filename = file.name;
         const basename = path.basename(filename, ".pdf");
-        const parts = basename.split(" – ");
-        const group = parts[0];
         return {
           basename,
           filename,
-          group,
         };
       });
 
@@ -114,20 +112,20 @@ export default async function (eleventyConfig) {
 
     await Promise.all(
       pdfs.map(async (item) => {
-        let agreement = agreements.get(item.group);
+        const parseResult = parseFilename(item.basename);
+        let agreement = agreements.get(parseResult.agreementName);
         if (!agreement) {
-          const name = item.group;
+          const name = parseResult.agreementName;
           const slug = name.toLowerCase().replace(/ /g, "-");
           agreement = {
             name,
             slug,
             documents: [],
           };
-          agreements.set(item.group, agreement);
+          agreements.set(parseResult.agreementName, agreement);
         }
 
         const filename = item.filename;
-        const parseResult = parseFilename(filename);
 
         const pdfPath = path.resolve(filename);
         const thumbnails = await generateThumbnails(pdfPath);
@@ -138,8 +136,10 @@ export default async function (eleventyConfig) {
           filename,
           bytes,
           thumbnails,
+          rank: parseResult.documentRank,
         });
-        console.log(agreement.documents);
+
+        agreement.documents.sort((a, b) => a.rank - b.rank);
       }),
     );
 

@@ -20,7 +20,7 @@ describe("parseFilename", () => {
   });
 
   it("allows document rank as a separator", () => {
-    const result = parseFilename("Testavtalet [2] Bilaga.pdf");
+    const result = parseFilename("Testavtalet (2) Bilaga.pdf");
     expect(result).toEqual({
       agreementName: "Testavtalet",
       documentName: "Bilaga",
