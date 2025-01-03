@@ -36,7 +36,7 @@ export default async function (eleventyConfig) {
     });
     const output = await convert(1);
     const thumbnailPaths: [string, string][] = [];
-    for (const size of [32, 64, 128, 512]) {
+    for (const size of [32, 64]) {
       const thumbnailPath = `${outputDir}/${basename}-${size}.webp`;
       await sharp(output.path)
         .resize(size)
