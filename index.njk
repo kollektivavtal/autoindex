@@ -10,7 +10,7 @@
     {{ breadcrumbs([ { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" } ]) }}
 
     <header>
-      <h1 class="font-mono text-xl">
+      <h1 class="text-xl">
         Kollektivavtalsarkivet {{ year }}
       </h1>
     </header>
@@ -19,7 +19,7 @@
 
 {% block right %}
   <table class="">
-    <caption class="w-min text-lg font-mono font-bold mb-4">
+    <caption class="w-min text-xl font-semibold mb-4">
       Avtal
     </caption>
 
@@ -42,7 +42,7 @@
 
           <td>
             <a
-              class="ml-4 font-mono text-blue-600 underline"
+              class="ml-4 text-sky-600 underline"
               href="/{{ agreement.slug }}">
               {{ agreement.name }}
             </a>
