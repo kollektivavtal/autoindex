@@ -1,6 +1,5 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 import sharp from "sharp";
 import { fromPath } from "pdf2pic";
 
@@ -17,7 +16,35 @@ type Document = {
   thumbnails: Record<string, string>;
 };
 
+type ParseResult = {
+  agreementName: string;
+  documentName: string;
+  documentRank: number;
+};
+
+export function parseFilename(filename: string): ParseResult {
+  const basename = path.basename(filename, ".pdf");
+
+  let agreementName = basename;
+  let documentName = basename;
+  let documentRank = 0;
+
+  const emDashMatches = basename.match(/^([^–]+) – (.+)$/);
+  if (emDashMatches) {
+    agreementName = emDashMatches[1];
+    documentName = emDashMatches[2];
+  }
+
+  return {
+    agreementName,
+    documentName,
+    documentRank,
+  };
+}
+
 export default async function (eleventyConfig) {
+  const { EleventyHtmlBasePlugin } = await import("@11ty/eleventy");
+
   const pathPrefix = `/${process.env.YEAR}/`;
   let outputDir = "_site";
 
@@ -93,18 +120,14 @@ export default async function (eleventyConfig) {
         }
 
         const filename = item.filename;
-        let name = item.basename;
-        if (name.includes(" – ")) {
-          const parts = name.split(" – ");
-          name = parts[1];
-        }
+        const parseResult = parseFilename(filename);
 
         const pdfPath = path.resolve(filename);
         const thumbnails = await generateThumbnails(pdfPath);
         const bytes = (await fs.stat(pdfPath)).size;
 
         agreement.documents.push({
-          name,
+          name: parseResult.documentName,
           filename,
           bytes,
           thumbnails,
