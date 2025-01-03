@@ -81,10 +81,12 @@ export default async function(eleventyConfig) {
 
       const pdfPath = path.resolve(filename)
       const thumbnails = await generateThumbnails(pdfPath)
+      const bytes = (await fs.stat(pdfPath)).size
 
       agreement.documents.push({
         filename,
         basename,
+        bytes,
         thumbnails,
       })
       console.log(agreement.documents)

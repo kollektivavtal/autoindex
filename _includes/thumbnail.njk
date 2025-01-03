@@ -1,9 +1,5 @@
 {%- macro thumbnail(alt, src) -%}
-  <div class="Thumbnail">
-    <img
-      class="Thumbnail__image"
-      alt="{{ alt }}"
-      src="{{ src }}"
-    />
-</div>
+  <div class="aspect-[707/1000] shrink-0 border-slate-200 border-2">
+    <img alt="{{ alt }}" src="{{ src }}">
+  </div>
 {%- endmacro -%}
