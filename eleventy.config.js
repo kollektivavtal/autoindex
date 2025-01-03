@@ -3,7 +3,6 @@ import path from 'path'
 import { EleventyHtmlBasePlugin } from "@11ty/eleventy"
 import sharp from 'sharp'
 import { fromPath } from 'pdf2pic'
-import * as sass from 'sass'
 
 export default async function(eleventyConfig) {
   const pathPrefix = `/${process.env.YEAR}/`
@@ -12,20 +11,6 @@ export default async function(eleventyConfig) {
   if (process.env.ELEVENTY_ENV !== 'production') {
     outputDir = `_site/${process.env.YEAR}`
   }
-
-  eleventyConfig.addTemplateFormats('scss')
-  eleventyConfig.addExtension('scss', {
-    outputFileExtension: 'css',
-    compile(content, inputPath) {
-      let parsed = path.parse(inputPath)
-      if (parsed.name.startsWith('_')) return
-      console.log('🔮 compiling scss...', inputPath)
-      return (data) => {
-        let result = sass.compile(inputPath)
-        return result.css
-      }
-    },
-  })
 
   async function generateThumbnails(pdfPath) {
     const basename = path.basename(pdfPath, '.pdf')
