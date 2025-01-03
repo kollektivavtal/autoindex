@@ -11,8 +11,8 @@ type Agreement = {
 };
 
 type Document = {
+  name: string;
   filename: string;
-  basename: string;
   bytes: number;
   thumbnails: Record<string, string>;
 };
@@ -62,7 +62,7 @@ export default async function (eleventyConfig) {
     const pdfs = files
       .filter(
         (file) =>
-          file.isFile() && path.extname(file.name).toLowerCase() === ".pdf"
+          file.isFile() && path.extname(file.name).toLowerCase() === ".pdf",
       )
       .map((file) => {
         const filename = file.name;
@@ -93,10 +93,10 @@ export default async function (eleventyConfig) {
         }
 
         const filename = item.filename;
-        let basename = item.basename;
-        if (basename.includes(" – ")) {
-          const parts = basename.split(" – ");
-          basename = parts[1];
+        let name = item.basename;
+        if (name.includes(" – ")) {
+          const parts = name.split(" – ");
+          name = parts[1];
         }
 
         const pdfPath = path.resolve(filename);
@@ -104,13 +104,13 @@ export default async function (eleventyConfig) {
         const bytes = (await fs.stat(pdfPath)).size;
 
         agreement.documents.push({
+          name,
           filename,
-          basename,
           bytes,
           thumbnails,
         });
         console.log(agreement.documents);
-      })
+      }),
     );
 
     return [...agreements.values()];
