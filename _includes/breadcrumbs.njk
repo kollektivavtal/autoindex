@@ -1,13 +1,13 @@
 {%- macro breadcrumbs(links) -%}
-  <nav class="" aria-label="Brödsmulor">
+  <nav aria-label="Brödsmulor">
     <ol class="flex flex-col">
-
       {% for link in links %}
         <li class="">
-          <a class="text-sky-400 underline" href="{{ link.url }}">{{ link.text }}</a>
+          <a class="text-sky-400 underline" href="{{ link.url }}"
+            >{{ link.text }}</a
+          >
         </li>
       {% endfor %}
-
     </ol>
   </nav>
 {%- endmacro -%}
