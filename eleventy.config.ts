@@ -4,6 +4,19 @@ import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 import sharp from "sharp";
 import { fromPath } from "pdf2pic";
 
+type Agreement = {
+  name: string;
+  slug: string;
+  documents: Document[];
+};
+
+type Document = {
+  filename: string;
+  basename: string;
+  bytes: number;
+  thumbnails: Record<string, string>;
+};
+
 export default async function (eleventyConfig) {
   const pathPrefix = `/${process.env.YEAR}/`;
   let outputDir = "_site";
@@ -63,7 +76,7 @@ export default async function (eleventyConfig) {
         };
       });
 
-    const agreements = new Map();
+    const agreements = new Map<string, Agreement>();
 
     await Promise.all(
       pdfs.map(async (item) => {
