@@ -1,13 +1,25 @@
-{%- macro breadcrumbs(links) -%}
-  <nav aria-label="Brödsmulor">
-    <ol class="flex flex-col">
-      {% for link in links %}
-        <li class="">
-          <a class="text-sky-400 underline" href="{{ link.url }}"
+{% if breadcrumbs %}
+  <nav
+    aria-label="Brödsmulor"
+    class="mb-4 flex h-12 w-full place-items-center justify-center border-b border-gray-200 px-4 lg:px-0"
+  >
+    <ol
+      class="flex w-full max-w-full flex-row items-center space-x-2 overflow-hidden text-sm lg:max-w-5xl"
+    >
+      {% for link in breadcrumbs %}
+        <li class="flex flex-row space-x-2">
+          <a
+            class="truncate text-blue-600"
+            href="{{ link.href }} {% if not loop.first %}underline{% endif %}"
             >{{ link.text }}</a
           >
+          {%- if not loop.last -%}
+            <span class="text-gray-500">/</span>
+          {%- endif -%}
         </li>
       {% endfor %}
     </ol>
   </nav>
-{%- endmacro -%}
+{% else %}
+  <div class="mb-4"></div>
+{% endif %}

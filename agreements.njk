@@ -5,13 +5,20 @@ pagination:
   alias: agreement
 permalink: "/{{ agreement.slug }}/index.html"
 layout: blank
+eleventyComputed:
+  breadcrumbs:
+    - href: https://kollektivavtal.github.io/
+      text: 🏠
+    - href: "/"
+      text: "{{ year }}"
+    - href: "/{{ agreement.slug }}/index.html"
+      text: "{{ agreement.name }}"
 ---
 
 {% from "thumbnail.njk" import thumbnail %}
-{% from "breadcrumbs.njk" import breadcrumbs %}
 {% from "h1.njk" import h1 %}
 
-{{ h1(agreement.name, "", "mb-12") }}
+{{ h1(agreement.name, "", "mb-8") }}
 
 <table>
   <caption class="mb-4 w-min text-xl font-bold">
@@ -34,7 +41,7 @@ layout: blank
 
         <td>
           <div class="ml-4 flex flex-col">
-            <a class="text-sky-600 underline" href="/{{ document.filename }}">
+            <a class="text-blue-600 underline" href="/{{ document.filename }}">
               {{ document.name }}
             </a>
             <span

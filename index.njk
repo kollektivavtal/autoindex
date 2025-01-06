@@ -1,12 +1,15 @@
 ---
 layout: blank
+eleventyComputed:
+  breadcrumbs:
+    - href: https://kollektivavtal.github.io/
+      text: 🏠
+    - href: "/"
+      text: "{{ year }}"
 ---
 
 {% from "thumbnail.njk" import thumbnail %}
-{% from "breadcrumbs.njk" import breadcrumbs %}
 {% from "h1.njk" import h1 %}
-
-<!-- {{ breadcrumbs([ { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" } ]) }} -->
 
 {{ h1("Kollektivavtalsarkivet " + year, "", "mb-12") }}
 
