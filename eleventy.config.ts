@@ -116,7 +116,13 @@ export default async function (eleventyConfig) {
         let agreement = agreements.get(parseResult.agreementName);
         if (!agreement) {
           const name = parseResult.agreementName;
-          const slug = name.toLowerCase().replace(/ /g, "-");
+          const slug = name
+            .normalize("NFC")
+            .toLowerCase()
+            .replace(/ /gi, "-")
+            .replace(/å/gi, "a")
+            .replace(/ä/gi, "a")
+            .replace(/ö/gi, "o");
           agreement = {
             name,
             slug,
