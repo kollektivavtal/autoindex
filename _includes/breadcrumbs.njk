@@ -9,8 +9,8 @@
       {% for link in breadcrumbs %}
         <li class="flex flex-row space-x-2">
           <a
-            class="truncate text-blue-600"
-            href="{{ link.href }} {% if not loop.first %}underline{% endif %}"
+            class="{% if not loop.first %}underline{% endif %} truncate text-blue-600"
+            href="{{ link.href }}"
             >{{ link.text }}</a
           >
           {%- if not loop.last -%}
