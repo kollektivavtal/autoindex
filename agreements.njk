@@ -4,61 +4,47 @@ pagination:
   size: 1
   alias: agreement
 permalink: "/{{ agreement.slug }}/index.html"
+layout: blank
 ---
 
-{% extends "left-right.njk" %}
 {% from "thumbnail.njk" import thumbnail %}
 {% from "breadcrumbs.njk" import breadcrumbs %}
+{% from "h1.njk" import h1 %}
 
-{% block left %}
-  <div class="flex flex-col items-center space-y-4">
-    {{
-      breadcrumbs([
-        { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" },
-        { url: "/", text: year }
-      ])
-    }}
+{{ h1(agreement.name, "", "mb-12") }}
 
-    <header>
-      <h1 class="text-xl">{{ agreement.name }} {{ year }}</h1>
-    </header>
-  </div>
-{% endblock %}
+<table>
+  <caption class="mb-4 w-min text-xl font-bold">
+    Dokument
+  </caption>
 
-{% block right %}
-  <table>
-    <caption class="mb-4 w-min text-xl font-bold">
-      Dokument
-    </caption>
+  <thead class="sr-only">
+    <th></th>
+    <th>Namn</th>
+  </thead>
 
-    <thead class="sr-only">
-      <th></th>
-      <th>Namn</th>
-    </thead>
+  <tbody class="flex flex-col space-y-4">
+    {% for document in agreement.documents %}
+      <tr>
+        <td>
+          <div class="aspect-[707/1000] shrink-0 border-2 border-slate-200">
+            <img alt="{{ alt }}" src="/{{ document.thumbnails.w64 }}" />
+          </div>
+        </td>
 
-    <tbody class="flex flex-col space-y-4">
-      {% for document in agreement.documents %}
-        <tr>
-          <td>
-            <div class="aspect-[707/1000] shrink-0 border-2 border-slate-200">
-              <img alt="{{ alt }}" src="/{{ document.thumbnails.w64 }}" />
-            </div>
-          </td>
-
-          <td>
-            <div class="ml-4 flex flex-col">
-              <a class="text-sky-600 underline" href="/{{ document.filename }}">
-                {{ document.name }}
-              </a>
-              <span
-                class="mt-1 max-w-full overflow-hidden text-sm leading-6 text-gray-700"
-              >
-                PDF, {{ (document.bytes / 1024).toFixed(2) }} KB
-              </span>
-            </div>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+        <td>
+          <div class="ml-4 flex flex-col">
+            <a class="text-sky-600 underline" href="/{{ document.filename }}">
+              {{ document.name }}
+            </a>
+            <span
+              class="mt-1 max-w-full overflow-hidden text-sm leading-6 text-gray-700"
+            >
+              PDF, {{ (document.bytes / 1024).toFixed(2) }} KB
+            </span>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

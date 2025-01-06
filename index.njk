@@ -1,49 +1,52 @@
-{% extends "left-right.njk" %}
+---
+layout: blank
+---
+
 {% from "thumbnail.njk" import thumbnail %}
 {% from "breadcrumbs.njk" import breadcrumbs %}
+{% from "h1.njk" import h1 %}
 
-{% block left %}
-  <div class="flex flex-col items-center space-y-4">
-    {{ breadcrumbs([ { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" } ]) }}
+<!-- {{ breadcrumbs([ { url: "https://kollektivavtal.github.io/", text: "Kollektivavtalsarkivet" } ]) }} -->
 
-    <header>
-      <h1 class="text-xl">Kollektivavtalsarkivet {{ year }}</h1>
-    </header>
-  </div>
-{% endblock %}
+{{ h1("Kollektivavtalsarkivet " + year, "", "mb-12") }}
 
-{% block right %}
-  <table class="">
-    <caption class="mb-4 w-min text-xl font-semibold">
-      Avtal
-    </caption>
+<table class="">
+  <caption class="mb-4 w-min text-xl font-semibold">
+    Avtal
+  </caption>
 
-    <thead class="sr-only">
+  <thead class="sr-only">
+    <tr>
+      <th></th>
+      <th>Namn</th>
+    </tr>
+  </thead>
+
+  <tbody class="flex flex-col space-y-4">
+    {% for agreement in collections.agreements %}
       <tr>
-        <th></th>
-        <th>Namn</th>
-      </tr>
-    </thead>
+        <td>
+          <div class="aspect-[707/1000] shrink-0 border-2 border-slate-200">
+            <img
+              alt="{{ alt }}"
+              src="{{ agreement.documents[0].thumbnails.w64 }}"
+            />
+          </div>
+        </td>
 
-    <tbody class="flex flex-col space-y-4">
-      {% for agreement in collections.agreements %}
-        <tr>
-          <td>
-            <div class="aspect-[707/1000] shrink-0 border-2 border-slate-200">
-              <img
-                alt="{{ alt }}"
-                src="{{ agreement.documents[0].thumbnails.w64 }}"
-              />
-            </div>
-          </td>
-
-          <td>
-            <a class="ml-4 text-sky-600 underline" href="/{{ agreement.slug }}">
+        <td>
+          <div class="ml-4 flex flex-col">
+            <a class="text-blue-600 underline" href="/{{ agreement.slug }}">
               {{ agreement.name }}
             </a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+            <span
+              class="mt-1 max-w-full overflow-hidden text-sm leading-6 text-gray-700"
+            >
+              {{ agreement.documents | length }} dokument
+            </span>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
