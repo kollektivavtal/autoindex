@@ -1,9 +1,6 @@
 {
   "type": "module",
   "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72",
-  "devDependencies": {
-    "@11ty/eleventy": "^3.0.0"
-  },
   "scripts": {
     "start": "npm-run-all -p dev:css dev:11ty",
     "dev:11ty": "npx tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts --serve",
@@ -14,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.5",
     "autoprefixer": "^10.4.20",
