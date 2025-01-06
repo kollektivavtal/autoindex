@@ -13,7 +13,8 @@
 
   <body class="mb-[128px] flex flex-col items-center">
     {% include "header.njk" %}
-    <main class="flex w-full max-w-5xl flex-col px-4 pt-8 lg:px-0">
+    {% include "breadcrumbs.njk" %}
+    <main class="flex w-full max-w-5xl flex-col px-4 lg:px-0">
       {{ content | safe }}
     </main>
   </body>
