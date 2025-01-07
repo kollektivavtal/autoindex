@@ -120,9 +120,11 @@ export default async function (eleventyConfig) {
             .normalize("NFC")
             .toLowerCase()
             .replace(/ /gi, "-")
+            .replace(/[()]/gi, "-")
             .replace(/å/gi, "a")
             .replace(/ä/gi, "a")
-            .replace(/ö/gi, "o");
+            .replace(/ö/gi, "o")
+            .replace(/--+/g, "-");
           agreement = {
             name,
             slug,
