@@ -9,9 +9,12 @@ import { promisify } from "util";
 const execAsync = promisify(exec);
 
 async function getLastModifiedDate(filename: string): Promise<Date> {
+  if (!process.env.GITHUB_WORKSPACE) {
+    return new Date("1970-01-01");
+  }
   try {
     const { stdout } = await execAsync(
-      `git log -1 --format=%cI -- "${path.join(process.env.GITHUB_WORKSPACE || "", filename)}"`,
+      `git --git-dir=${process.env.GITHUB_WORKSPACE}/.git --work-tree=${process.env.GITHUB_WORKSPACE} log -1 --format=%cI -- "${filename}"`,
     );
     const date = new Date(stdout.trim());
     return date;
