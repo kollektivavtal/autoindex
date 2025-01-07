@@ -11,7 +11,7 @@ const execAsync = promisify(exec);
 async function getLastModifiedDate(filename: string): Promise<Date> {
   try {
     const { stdout } = await execAsync(
-      `git log -1 --format=%cI -- "${filename}"`,
+      `git log -1 --format=%cI -- "${path.join(process.env.GITHUB_WORKSPACE || "", filename)}"`,
     );
     const date = new Date(stdout.trim());
     return date;
