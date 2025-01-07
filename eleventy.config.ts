@@ -1,12 +1,30 @@
+import EleventyUnifiedPlugin from "eleventy-plugin-unified";
 import { promises as fs } from "fs";
 import path, { parse } from "path";
 import sharp from "sharp";
 import { fromPath } from "pdf2pic";
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
+
+async function getLastModifiedDate(filename: string): Promise<Date> {
+  try {
+    const { stdout } = await execAsync(
+      `git log -1 --format=%cI -- "${filename}"`,
+    );
+    const date = new Date(stdout.trim());
+    return date;
+  } catch (e) {
+    return new Date("1970-01-01");
+  }
+}
 
 type Agreement = {
   name: string;
   slug: string;
   documents: Document[];
+  modified: Date;
 };
 
 type Document = {
@@ -15,6 +33,7 @@ type Document = {
   bytes: number;
   rank: number;
   thumbnails: Record<string, string>;
+  modified: Date;
 };
 
 type ParseResult = {
@@ -129,6 +148,7 @@ export default async function (eleventyConfig) {
             name,
             slug,
             documents: [],
+            modified: new Date("1970-01-01"),
           };
           agreements.set(parseResult.agreementName, agreement);
         }
@@ -138,6 +158,11 @@ export default async function (eleventyConfig) {
         const pdfPath = path.resolve(filename);
         const thumbnails = await generateThumbnails(pdfPath);
         const bytes = (await fs.stat(pdfPath)).size;
+        const modified = await getLastModifiedDate(filename);
+
+        if (modified > agreement.modified) {
+          agreement.modified = modified;
+        }
 
         agreement.documents.push({
           name: parseResult.documentName,
@@ -145,6 +170,7 @@ export default async function (eleventyConfig) {
           bytes,
           thumbnails,
           rank: parseResult.documentRank,
+          modified,
         });
 
         agreement.documents.sort((a, b) => a.rank - b.rank);
@@ -154,10 +180,17 @@ export default async function (eleventyConfig) {
     return [...agreements.values()];
   });
 
+  eleventyConfig.addPlugin(EleventyUnifiedPlugin, {
+    htmlTransforms: [["rehype-format", { indent: " " }]],
+  });
+
   return {
     pathPrefix,
     dir: {
       output: outputDir,
+    },
+    site: {
+      url: "https://kollektivavtal.github.io/",
     },
   };
 }
