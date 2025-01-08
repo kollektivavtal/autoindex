@@ -4,6 +4,8 @@ import path, { parse } from "path";
 import sharp from "sharp";
 import { fromPath } from "pdf2pic";
 
+type Language = "sv" | "en";
+
 type Agreement = {
   name: string;
   slug: string;
@@ -16,25 +18,28 @@ type Document = {
   bytes: number;
   rank: number;
   thumbnails: Record<string, string>;
+  language: Language;
 };
 
 type ParseResult = {
   agreementName: string;
   documentName: string;
   documentRank: number;
+  documentLanguage?: Language;
 };
 
 export function parseFilename(filename: string): ParseResult {
-  const basename = path.basename(filename, ".pdf");
+  let basename = path.basename(filename, ".pdf");
 
   let agreementName = basename;
   let documentName = basename;
   let documentRank = 0;
+  let documentLanguage: Language | undefined;
 
-  const emDashMatches = basename.match(/^([^–]+) – (.+)$/);
-  if (emDashMatches) {
-    agreementName = emDashMatches[1];
-    documentName = emDashMatches[2];
+  const languageMatches = basename.match(/ \((en|sv)\)$/);
+  if (languageMatches) {
+    documentLanguage = languageMatches[1] as Language;
+    basename = basename.substring(0, languageMatches.index);
   }
 
   const rankMatches = basename.match(/^([^\[]+) \((\d+)\) (.+)$/);
@@ -48,6 +53,7 @@ export function parseFilename(filename: string): ParseResult {
     agreementName,
     documentName,
     documentRank,
+    documentLanguage,
   };
 }
 
@@ -146,6 +152,7 @@ export default async function (eleventyConfig) {
           bytes,
           thumbnails,
           rank: parseResult.documentRank,
+          language: parseResult.documentLanguage || "sv",
         });
 
         agreement.documents.sort((a, b) => a.rank - b.rank);

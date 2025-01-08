@@ -41,13 +41,23 @@ eleventyComputed:
 
         <td>
           <div class="ml-4 flex flex-col">
-            <a class="text-blue-600 underline" href="/{{ document.filename }}">
+            <a
+              class="text-blue-600 underline"
+              href="/{{ document.filename }}"
+              {% if document.language !== "sv" %}lang="{{ document.language }}"{% endif %}
+            >
               {{ document.name }}
             </a>
             <span
               class="mt-1 max-w-full overflow-hidden text-sm leading-6 text-gray-700"
             >
               PDF, {{ (document.bytes / 1024).toFixed(2) }} KB
+              {%- if document.language !== "sv" -%}
+                ,
+                {% if document.language === "en" -%}
+                  <span lang="en">English</span>
+                {%- endif -%}
+              {%- endif -%}
             </span>
           </div>
         </td>
