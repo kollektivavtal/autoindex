@@ -66,14 +66,14 @@ eleventyComputed:
   </tbody>
 </table>
 
-{% if agreement.sources %}
+{% if agreement.sources.length > 0 %}
   <section class="mt-8">
     <h2 class="mb-4 w-min text-xl font-bold">Referenser</h2>
 
-    <ol class="flex list-inside list-decimal flex-col gap-y-4">
+    <ol class="flex list-inside list-decimal flex-col gap-y-1">
       {% for source in agreement.sources %}
-        <li>
-          <a class="text-blue-600 underline" href="{{ source }}">
+        <li class="truncate">
+          <a class="truncate text-blue-600 underline" href="{{ source }}">
             {{ source }}
           </a>
         </li>

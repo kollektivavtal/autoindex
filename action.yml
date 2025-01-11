@@ -23,6 +23,12 @@ runs:
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
 
+    - name: Copy README to GitHub Path
+      run: cp -r ./readme.md $GITHUB_ACTION_PATH
+      shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+
     - run: corepack enable
       shell: bash
 
