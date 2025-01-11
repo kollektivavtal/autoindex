@@ -65,3 +65,19 @@ eleventyComputed:
     {% endfor %}
   </tbody>
 </table>
+
+{% if agreement.sources %}
+  <section class="mt-8">
+    <h2 class="mb-4 w-min text-xl font-bold">Referenser</h2>
+
+    <ol class="flex list-inside list-decimal flex-col gap-y-4">
+      {% for source in agreement.sources %}
+        <li>
+          <a class="text-blue-600 underline" href="{{ source }}">
+            {{ source }}
+          </a>
+        </li>
+      {% endfor %}
+    </ol>
+  </section>
+{% endif %}

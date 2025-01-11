@@ -1,3 +1,6 @@
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import { select, selectAll } from "unist-util-select";
 import EleventyUnifiedPlugin from "eleventy-plugin-unified";
 import { promises as fs } from "fs";
 import path, { parse } from "path";
@@ -10,6 +13,7 @@ type Agreement = {
   name: string;
   slug: string;
   documents: Document[];
+  sources: string[];
 };
 
 type Document = {
@@ -57,7 +61,40 @@ export function parseFilename(filename: string): ParseResult {
   };
 }
 
+function slugify(name: string): string {
+  return name
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/ /gi, "-")
+    .replace(/[()]/gi, "-")
+    .replace(/å/gi, "a")
+    .replace(/ä/gi, "a")
+    .replace(/ö/gi, "o")
+    .replace(/--+/g, "-");
+}
+
 export default async function (eleventyConfig) {
+  const readme = await fs.readFile("readme.md", "utf-8");
+  const processor = unified().use(remarkParse);
+  const tree = processor.parse(readme);
+
+  const referenceMap: Record<string, string[]> = {};
+
+  let prevH2: string | null = null;
+  for (const child of tree.children) {
+    if (child.type === "heading" && child.depth === 2) {
+      prevH2 = (child.children[0] as any).value;
+      referenceMap[slugify(prevH2)] = [];
+    } else if (child.type === "list" && prevH2) {
+      referenceMap[slugify(prevH2)] = selectAll("text", child).map(
+        (node) => (node as any).value,
+      );
+      prevH2 = null;
+    } else {
+      prevH2 = null;
+    }
+  }
+
   const { EleventyHtmlBasePlugin } = await import("@11ty/eleventy");
 
   const pathPrefix = `/${process.env.YEAR}/`;
@@ -123,25 +160,17 @@ export default async function (eleventyConfig) {
         let agreement = agreements.get(parseResult.agreementName);
         if (!agreement) {
           const name = parseResult.agreementName;
-          const slug = name
-            .normalize("NFC")
-            .toLowerCase()
-            .replace(/ /gi, "-")
-            .replace(/[()]/gi, "-")
-            .replace(/å/gi, "a")
-            .replace(/ä/gi, "a")
-            .replace(/ö/gi, "o")
-            .replace(/--+/g, "-");
+          const slug = slugify(name);
           agreement = {
             name,
             slug,
             documents: [],
+            sources: referenceMap[slug] || [],
           };
           agreements.set(parseResult.agreementName, agreement);
         }
 
         const filename = item.filename;
-
         const pdfPath = path.resolve(filename);
         const thumbnails = await generateThumbnails(pdfPath);
         const bytes = (await fs.stat(pdfPath)).size;
