@@ -13,12 +13,13 @@ eleventyComputed:
       text: "{{ year }}"
     - href: "/{{ agreement.slug }}/index.html"
       text: "{{ agreement.name }}"
+  title: "{{ agreement.name }} {{ year }}"
 ---
 
 {% from "thumbnail.njk" import thumbnail %}
 {% from "h1.njk" import h1 %}
 
-{{ h1(agreement.name, "", "mb-8") }}
+{{ h1(agreement.name + " " + year, "", "mb-8") }}
 
 <table>
   <caption class="mb-4 w-min text-xl font-bold">

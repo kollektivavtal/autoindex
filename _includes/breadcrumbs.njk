@@ -1,15 +1,15 @@
 {% if breadcrumbs %}
   <nav
     aria-label="Brödsmulor"
-    class="mb-4 flex h-12 w-full place-items-center justify-center border-b border-gray-200 px-4 lg:px-0"
+    class="mb-4 flex h-12 w-full max-w-full place-items-center justify-center overflow-hidden border-b border-gray-200 px-4 lg:px-0"
   >
     <ol
-      class="flex w-full max-w-full flex-row items-center space-x-2 overflow-hidden text-sm lg:max-w-5xl"
+      class="flex w-full max-w-full flex-row items-center space-x-2 text-sm lg:max-w-5xl"
     >
       {% for link in breadcrumbs %}
         <li class="flex flex-row space-x-2">
           <a
-            class="{% if not loop.first %}underline{% endif %} truncate text-blue-600"
+            class="{% if not loop.first %}underline{% endif %} text-blue-600"
             href="{{ link.href }}"
             >{{ link.text }}</a
           >
