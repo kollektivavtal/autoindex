@@ -3,9 +3,13 @@ import remarkParse from "remark-parse";
 import { select, selectAll } from "unist-util-select";
 import EleventyUnifiedPlugin from "eleventy-plugin-unified";
 import { promises as fs } from "fs";
+import { exec } from "child_process";
+import { promisify } from "util";
 import path, { parse } from "path";
 import sharp from "sharp";
 import { fromPath } from "pdf2pic";
+
+const execPromise = promisify(exec);
 
 type Language = "sv" | "en";
 
@@ -181,6 +185,18 @@ export default async function (eleventyConfig) {
         const pdfPath = path.join(githubWorkspace, filename);
         const thumbnails = await generateThumbnails(pdfPath);
         const bytes = (await fs.stat(pdfPath)).size;
+
+        try {
+          const gitDir = path.join(githubWorkspace, ".git");
+          const workTree = githubWorkspace;
+          const command = `git --git-dir="${gitDir}" --work-tree="${workTree}" log --follow --diff-filter=A --format=%aI -- "${pdfPath}"`;
+          const { stdout } = await execPromise(command);
+          const creationDate = stdout.trim();
+          console.log(creationDate);
+        } catch (error) {
+          console.log("error");
+          console.error(error);
+        }
 
         agreement.documents.push({
           name: parseResult.documentName,
