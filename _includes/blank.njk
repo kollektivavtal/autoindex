@@ -7,6 +7,9 @@
     {% if description %}
       <meta name="og:description" content="{{ description }}" />
     {% endif %}
+    {% if icon %}
+      <link rel="icon" href="{{ icon }}" />
+    {% endif %}
     <link rel="stylesheet" href="/tailwind.css" />
     <title>{{ title }}</title>
   </head>

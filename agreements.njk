@@ -14,6 +14,7 @@ eleventyComputed:
     - href: "/{{ agreement.slug }}/index.html"
       text: "{{ agreement.name }}"
   title: "{{ agreement.name }} {{ year }}"
+  icon: "/{{ agreement.documents[0].thumbnails.w64 }}"
 ---
 
 {% from "thumbnail.njk" import thumbnail %}
