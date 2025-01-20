@@ -74,8 +74,10 @@ function slugify(name: string): string {
 }
 
 export default async function (eleventyConfig) {
-  const pdfDirectory = process.env.GITHUB_WORKSPACE || ".";
-  const readme = await fs.readFile(`${pdfDirectory}/readme.md`, "utf-8");
+  const githubActionPath = process.env.GITHUB_ACTION_PATH || ".";
+  const githubWorkspace = process.env.GITHUB_WORKSPACE || ".";
+
+  const readme = await fs.readFile(`${githubWorkspace}/readme.md`, "utf-8");
   const processor = unified().use(remarkParse);
   const tree = processor.parse(readme);
 
@@ -99,10 +101,10 @@ export default async function (eleventyConfig) {
   const { EleventyHtmlBasePlugin } = await import("@11ty/eleventy");
 
   const pathPrefix = `/${process.env.YEAR}/`;
-  let outputDir = "_site";
+  let outputDir = `${githubActionPath}/_site`;
 
   if (process.env.ELEVENTY_ENV !== "production") {
-    outputDir = `_site/${process.env.YEAR}`;
+    outputDir = `${githubActionPath}/_site/${process.env.YEAR}`;
   }
 
   async function generateThumbnails(pdfPath) {
@@ -137,7 +139,7 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("agreements", async function () {
-    const files = await fs.readdir(pdfDirectory, { withFileTypes: true });
+    const files = await fs.readdir(githubWorkspace, { withFileTypes: true });
 
     const pdfs = files
       .filter(
@@ -172,7 +174,7 @@ export default async function (eleventyConfig) {
         }
 
         const filename = item.filename;
-        const pdfPath = path.join(pdfDirectory, filename);
+        const pdfPath = path.join(githubWorkspace, filename);
         const thumbnails = await generateThumbnails(pdfPath);
         const bytes = (await fs.stat(pdfPath)).size;
 
