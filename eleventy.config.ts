@@ -107,6 +107,8 @@ export default async function (eleventyConfig) {
     outputDir = `${githubActionPath}/_site/${process.env.YEAR}`;
   }
 
+  await fs.mkdir(outputDir, { recursive: true });
+
   async function generateThumbnails(pdfPath) {
     console.log(`Generating thumbnails for ${pdfPath}`);
     const basename = path.basename(pdfPath, ".pdf");
