@@ -108,6 +108,7 @@ export default async function (eleventyConfig) {
   }
 
   async function generateThumbnails(pdfPath) {
+    console.log(`Generating thumbnails for ${pdfPath}`);
     const basename = path.basename(pdfPath, ".pdf");
     const convert = fromPath(pdfPath, {
       density: 100,
@@ -117,6 +118,7 @@ export default async function (eleventyConfig) {
       format: "webp",
     });
     const output = await convert(1);
+    console.log(output);
     const thumbnailPaths: [string, string][] = [];
     for (const size of [32, 64]) {
       const thumbnailPath = `${outputDir}/${basename}-${size}.webp`;
