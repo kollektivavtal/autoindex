@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import { select, selectAll } from "unist-util-select";
@@ -27,6 +28,7 @@ type Document = {
   rank: number;
   thumbnails: Record<string, string>;
   language: Language;
+  created: Date;
 };
 
 type ParseResult = {
@@ -114,7 +116,6 @@ export default async function (eleventyConfig) {
   await fs.mkdir(outputDir, { recursive: true });
 
   async function generateThumbnails(pdfPath) {
-    console.log(`Generating thumbnails for ${pdfPath}`);
     const basename = path.basename(pdfPath, ".pdf");
     const convert = fromPath(pdfPath, {
       density: 100,
@@ -124,7 +125,6 @@ export default async function (eleventyConfig) {
       format: "webp",
     });
     const output = await convert(1);
-    console.log(output);
     const thumbnailPaths: [string, string][] = [];
     for (const size of [32, 64]) {
       const thumbnailPath = `${outputDir}/${basename}-${size}.webp`;
@@ -186,17 +186,12 @@ export default async function (eleventyConfig) {
         const thumbnails = await generateThumbnails(pdfPath);
         const bytes = (await fs.stat(pdfPath)).size;
 
-        try {
-          const gitDir = path.join(githubWorkspace, ".git");
-          const workTree = githubWorkspace;
-          const command = `git --git-dir="${gitDir}" --work-tree="${workTree}" log --follow --diff-filter=A --format=%aI -- "${pdfPath}"`;
-          const { stdout } = await execPromise(command);
-          const creationDate = stdout.trim();
-          console.log(creationDate);
-        } catch (error) {
-          console.log("error");
-          console.error(error);
-        }
+        const gitDir = path.join(githubWorkspace, ".git");
+        const workTree = githubWorkspace;
+        const command = `git --git-dir="${gitDir}" --work-tree="${workTree}" log --follow --diff-filter=A --format=%aI -- "${filename}"`;
+        const { stdout } = await execPromise(command);
+        const creationDate = stdout.trim();
+        const created = new Date(creationDate);
 
         agreement.documents.push({
           name: parseResult.documentName,
@@ -205,6 +200,7 @@ export default async function (eleventyConfig) {
           thumbnails,
           rank: parseResult.documentRank,
           language: parseResult.documentLanguage || "sv",
+          created,
         });
 
         agreement.documents.sort((a, b) => a.rank - b.rank);
@@ -212,6 +208,10 @@ export default async function (eleventyConfig) {
     );
 
     return [...agreements.values()];
+  });
+
+  eleventyConfig.addFilter("lastmod", function (agreement) {
+    return _.max(agreement.documents.map((doc) => doc.created));
   });
 
   eleventyConfig.addPlugin(EleventyUnifiedPlugin, {
