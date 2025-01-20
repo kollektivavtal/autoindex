@@ -74,7 +74,8 @@ function slugify(name: string): string {
 }
 
 export default async function (eleventyConfig) {
-  const readme = await fs.readFile("readme.md", "utf-8");
+  const pdfDirectory = process.env.GITHUB_WORKSPACE || ".";
+  const readme = await fs.readFile(`${pdfDirectory}/readme.md`, "utf-8");
   const processor = unified().use(remarkParse);
   const tree = processor.parse(readme);
 
@@ -136,7 +137,7 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("agreements", async function () {
-    const files = await fs.readdir(".", { withFileTypes: true });
+    const files = await fs.readdir(pdfDirectory, { withFileTypes: true });
 
     const pdfs = files
       .filter(
@@ -171,7 +172,7 @@ export default async function (eleventyConfig) {
         }
 
         const filename = item.filename;
-        const pdfPath = path.resolve(filename);
+        const pdfPath = path.join(pdfDirectory, filename);
         const thumbnails = await generateThumbnails(pdfPath);
         const bytes = (await fs.stat(pdfPath)).size;
 
