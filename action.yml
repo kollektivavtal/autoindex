@@ -35,6 +35,12 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
 
+    - run: pnpm sitemap "${{ inputs.year }}" "${{ github.workspace }}" "${{ github.action_path }}/public/"
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        SOURCE_DIRECTORY_PATH: ${{ github.workspace }}
+
     - run: pnpm build
       shell: bash
       working-directory: ${{ github.action_path }}
@@ -42,12 +48,6 @@ runs:
         NEXT_PUBLIC_YEAR: ${{ inputs.year }}
         SOURCE_DIRECTORY_PATH: ${{ github.workspace }}
         TARGET_DIRECTORY_PATH: ${{ github.action_path }}/public
-
-    - run: pnpm sitemap "${{ inputs.year }}" "${{ github.workspace }}" "${{ github.action_path }}/public/"
-      shell: bash
-      working-directory: ${{ github.action_path }}
-      env:
-        SOURCE_DIRECTORY_PATH: ${{ github.workspace }}
 
     - uses: peaceiris/actions-gh-pages@v3
       with:
