@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     ? `/${process.env.NEXT_PUBLIC_YEAR}`
     : "",
   output: "export",
+  trailingSlash: true,
 };
 
 export default nextConfig;
