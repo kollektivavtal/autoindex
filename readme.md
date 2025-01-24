@@ -1,7 +1,7 @@
-# starter
+# autoindex
 
-Web starter project.
+Autoindexer for collective agreements.
 
 ## License
 
-[MIT](https://github.com/arbetsmarknad/starter/blob/main/license)
+[MIT](https://github.com/kollektivavtal/autoindex/blob/main/license)
