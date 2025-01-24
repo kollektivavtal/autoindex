@@ -24,6 +24,12 @@
     "unist-util-select": "^5.1.0"
   },
   "name": "@kollektivavtal/autoindex",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
   "postcss": {
     "plugins": {
       "@tailwindcss/postcss": {}
