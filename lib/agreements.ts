@@ -108,7 +108,6 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
     pdfs.map(async (pdf) => {
       const basename = path.basename(pdf);
       const parseResult = parseFilename(basename);
-      console.log(parseResult);
 
       let agreement = agreementMap.get(parseResult.agreementName);
       if (!agreement) {
@@ -118,7 +117,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
           name,
           slug,
           documents: [],
-          sources: [],
+          sources: referenceMap[slug] || [],
         };
         agreementMap.set(parseResult.agreementName, agreement);
       }
