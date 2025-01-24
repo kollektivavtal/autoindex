@@ -90,11 +90,11 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
   let prevH2: string | null = null;
   for (const child of tree.children) {
     if (child.type === "heading" && child.depth === 2) {
-      prevH2 = (child.children[0] as any).value;
+      prevH2 = (child.children[0] as { value: string }).value;
       referenceMap[slugify(prevH2!)] = [];
     } else if (child.type === "list" && prevH2) {
       referenceMap[slugify(prevH2)] = selectAll("text", child).map(
-        (node) => (node as any).value
+        (node) => (node as unknown as { value: string }).value
       );
       prevH2 = null;
     } else {
