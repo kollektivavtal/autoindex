@@ -19,6 +19,7 @@ import { Page } from "@arbetsmarknad/components/Page";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
 import { loadAgreements } from "@/lib/agreements";
 import { Agreement } from "@/lib/agreements";
+import { Metadata } from "next";
 
 type AgreementParams = {
   slug: string;
@@ -31,6 +32,17 @@ type AgreementProps = {
 export async function generateStaticParams(): Promise<AgreementParams[]> {
   const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
   return agreements.map((a) => ({ slug: a.slug }));
+}
+
+export async function generateMetadata(
+  props: AgreementProps
+): Promise<Metadata> {
+  const params = await props.params;
+  const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
+  const agreement = agreements.find((a) => a.slug === params.slug)!;
+  return {
+    title: `${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`,
+  };
 }
 
 export default async function AgreementPage(props: AgreementProps) {
