@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const agreements = await loadAgreements(process.env.TARGET_DIRECTORY_PATH!);
+  const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
 
   return (
     <Page>
