@@ -16,17 +16,26 @@ import { Container } from "@arbetsmarknad/components/Container";
 import { HeaderMenu } from "@arbetsmarknad/components/HeaderMenu";
 import { Page } from "@arbetsmarknad/components/Page";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
-import { Metadata } from "next";
 import { loadAgreements } from "@/lib/agreements";
+import { Agreement } from "@/lib/agreements";
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: `Kollektivavtalsarkivet ${process.env.NEXT_PUBLIC_YEAR}`,
-  };
+type AgreementParams = {
+  slug: string;
+};
+
+type AgreementProps = {
+  params: Promise<Agreement>;
+};
+
+export async function generateStaticParams(): Promise<AgreementParams[]> {
+  const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
+  return agreements.map((a) => ({ slug: a.slug }));
 }
 
-export default async function Home() {
-  const agreements = await loadAgreements(process.env.TARGET_DIRECTORY_PATH!);
+export default async function AgreementPage(props: AgreementProps) {
+  const params = await props.params;
+  const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
+  const agreement = agreements.find((a) => a.slug === params.slug)!;
 
   return (
     <Page>
@@ -56,24 +65,26 @@ export default async function Home() {
       <main className="flex flex-col items-center w-full py-4">
         <Container className="flex flex-col items-start space-y-8">
           <TopLevelHeading
-            text={`Kollektivavtalsarkivet ${process.env.NEXT_PUBLIC_YEAR}`}
+            text={`${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`}
           />
 
           <section className="flex flex-col items-start space-y-4">
             <h2 className="text-2xl font-bold">Senaste Avtal</h2>
             <DocumentList>
-              {agreements.map((agreement) => (
-                <DocumentItem key={agreement.slug}>
+              {agreement.documents.map((document) => (
+                <DocumentItem key={document.rank}>
                   <DocumentIcon
-                    src={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.documents[0].thumbnails.w64}`}
+                    src={`/${process.env.NEXT_PUBLIC_YEAR}/${document.thumbnails.w64}`}
                   />
                   <DocumentLink
-                    href={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.slug}`}
+                    href={`/${process.env.NEXT_PUBLIC_YEAR}/${document.filename}`}
                   >
-                    {agreement.name}
+                    {document.name}
                   </DocumentLink>
                   <DocumentDescription>
-                    {`${agreement.documents.length} dokument`}
+                    {["PDF", `${(document.bytes / 1024).toFixed(2)} KB`].join(
+                      ", "
+                    )}
                   </DocumentDescription>
                 </DocumentItem>
               ))}

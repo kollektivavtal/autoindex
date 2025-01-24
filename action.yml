@@ -1,0 +1,48 @@
+name: "AutoIndex Collective Agreements"
+description: "Automatically update an HTML index of collective agreements."
+inputs:
+  github_token:
+    description: "The GitHub token to use for deployment."
+    required: true
+  yer:
+    description: "The year the PDFs are for."
+    required: true
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - run: |
+        sudo apt-get update
+        sudo apt-get install -y graphicsmagick
+      shell: bash
+
+    - uses: pnpm/action-setup@v4
+      with:
+        run_install: true
+        version: 10
+
+    - run: pnpm install
+      shell: bash
+      working-directory: ${{ github.action_path }}
+
+    - run: cp "${{ github.workspace }}/*.pdf" "${{ github.action_path }}/public/"
+      shell: bash
+
+    - run: pnpm thumbnails "${{ github.action_path }}/public/" "${{ github.action_path }}/public/"
+      shell: bash
+
+    - run: pnpm build
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        NEXT_PUBLIC_YEAR: ${{ inputs.year }}
+        SOURCE_DIRECTORY_PATH: ${{ github.workspace }}
+        TARGET_DIRECTORY_PATH: ${{ github.action_path }}/public
+
+    - uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ inputs.github_token }}
+        publish_dir: ${{ github.action_path }}/out
+        force_orphan: true
