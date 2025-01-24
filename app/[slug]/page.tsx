@@ -60,6 +60,14 @@ export default async function AgreementPage(props: AgreementProps) {
                 {process.env.NEXT_PUBLIC_YEAR}
               </BreadcrumbLink>
             </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.slug}`}
+              >
+                {agreement.name}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
           </BreadcrumbList>
         </Container>
       </Breadcrumb>
