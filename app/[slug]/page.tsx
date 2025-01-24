@@ -14,6 +14,7 @@ import {
 } from "@arbetsmarknad/components/DocumentList";
 import { Container } from "@arbetsmarknad/components/Container";
 import { HeaderMenu } from "@arbetsmarknad/components/HeaderMenu";
+import { LinkList } from "@arbetsmarknad/components/LinkList";
 import { Page } from "@arbetsmarknad/components/Page";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
 import { loadAgreements } from "@/lib/agreements";
@@ -69,7 +70,7 @@ export default async function AgreementPage(props: AgreementProps) {
           />
 
           <section className="flex flex-col items-start space-y-4">
-            <h2 className="text-2xl font-bold">Senaste Avtal</h2>
+            <h2 className="text-2xl font-bold">Dokument</h2>
             <DocumentList>
               {agreement.documents.map((document) => (
                 <DocumentItem key={document.rank}>
@@ -90,6 +91,15 @@ export default async function AgreementPage(props: AgreementProps) {
               ))}
             </DocumentList>
           </section>
+
+          {agreement.sources.length > 0 ? (
+            <section className="flex flex-col items-start space-y-4 max-w-full">
+              <h2 className="text-2xl font-bold">Källor</h2>
+              <LinkList links={agreement.sources} />
+            </section>
+          ) : (
+            <></>
+          )}
         </Container>
       </main>
     </Page>
