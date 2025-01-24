@@ -27,6 +27,9 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
 
+    - run: ls "${{ github.workspace }}"
+      shell: bash
+
     - run: cp "${{ github.workspace }}/*.pdf" "${{ github.action_path }}/public/"
       shell: bash
 
