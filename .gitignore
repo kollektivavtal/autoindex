@@ -40,5 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Ignore PDFs in public dir
+# Ignore PDFs and WEBPs in public dir
 /public/*.pdf
+/public/*.webp
