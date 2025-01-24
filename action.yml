@@ -30,7 +30,7 @@ runs:
     - run: ls "${{ github.workspace }}"
       shell: bash
 
-    - run: cp "${{ github.workspace }}/*.pdf" "${{ github.action_path }}/public/"
+    - run: pnpm copy "${{ github.workspace }}" "${{ github.action_path }}/public/"
       shell: bash
 
     - run: pnpm thumbnails "${{ github.action_path }}/public/" "${{ github.action_path }}/public/"

@@ -40,6 +40,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
+    "copy": "tsx ./scripts/copy.ts",
     "thumbnails": "tsx ./scripts/thumbnails.ts"
   },
   "version": "0.1.0"
