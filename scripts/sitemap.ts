@@ -12,7 +12,6 @@ if (process.argv.length < 3) {
   let [year, src, dst] = process.argv.slice(2);
   src = path.resolve(src);
   dst = path.resolve(dst);
-  console.log({ year, src, dst });
   const agreements = await loadAgreements(src);
   const outputFile = path.join(dst, "sitemap.xml");
 
