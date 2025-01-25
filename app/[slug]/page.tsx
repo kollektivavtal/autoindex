@@ -16,6 +16,8 @@ import { Container } from "@arbetsmarknad/components/Container";
 import { HeaderMenu } from "@arbetsmarknad/components/HeaderMenu";
 import { LinkList } from "@arbetsmarknad/components/LinkList";
 import { Page } from "@arbetsmarknad/components/Page";
+import { Section } from "@arbetsmarknad/components/Section";
+import { SectionHeading } from "@arbetsmarknad/components/SectionHeading";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
 import { loadAgreements } from "@/lib/agreements";
 import { Agreement } from "@/lib/agreements";
@@ -89,8 +91,8 @@ export default async function AgreementPage(props: AgreementProps) {
             text={`${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`}
           />
 
-          <section className="flex flex-col items-start space-y-4">
-            <h2 className="text-2xl font-bold">Dokument</h2>
+          <Section>
+            <SectionHeading>Dokument</SectionHeading>
             <DocumentList>
               {agreement.documents.map((document) => (
                 <DocumentItem key={document.rank}>
@@ -110,13 +112,13 @@ export default async function AgreementPage(props: AgreementProps) {
                 </DocumentItem>
               ))}
             </DocumentList>
-          </section>
+          </Section>
 
           {agreement.sources.length > 0 ? (
-            <section className="flex flex-col items-start space-y-4 max-w-full">
-              <h2 className="text-2xl font-bold">Källor</h2>
+            <Section>
+              <SectionHeading>Källor</SectionHeading>
               <LinkList links={agreement.sources} />
-            </section>
+            </Section>
           ) : (
             <></>
           )}
