@@ -19,8 +19,8 @@ importers:
         version: 19.0.0(react@19.0.0)
     devDependencies:
       '@arbetsmarknad/components':
-        specifier: ^0.0.15
-        version: 0.0.15(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(tailwindcss@4.0.0)(typescript@5.7.3)
+        specifier: ^0.0.16
+        version: 0.0.16(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(tailwindcss@4.0.0)(typescript@5.7.3)
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.2.0
@@ -82,8 +82,8 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@arbetsmarknad/components@0.0.15':
-    resolution: {integrity: sha512-HFYaEuXd0knXiSHLiYpJzx+0dmqpDK64AbmMj75HuvR/Zp1AsVIq2X27idvgf1Iqt4k3dR6tPoqlodKgIn2uyA==}
+  '@arbetsmarknad/components@0.0.16':
+    resolution: {integrity: sha512-/OAEiMNYjrn+aHOPkUK0VKMLDJQ3Ji1Bbqoo1lYpL7rVjno2xklnXnXYTmxMfMXRb3N5su+OEWutFJJe2guTkg==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -1982,7 +1982,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@arbetsmarknad/components@0.0.15(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(tailwindcss@4.0.0)(typescript@5.7.3)':
+  '@arbetsmarknad/components@0.0.16(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(tailwindcss@4.0.0)(typescript@5.7.3)':
     dependencies:
       '@radix-ui/react-slot': 1.1.1(@types/react@19.0.7)(react@19.0.0)
       class-variance-authority: 0.7.1
