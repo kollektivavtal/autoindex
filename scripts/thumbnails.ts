@@ -37,6 +37,4 @@ if (process.argv.length < 3) {
     }
     fs.rmSync(output.path!);
   }
-
-  console.log(pdfs);
 })();

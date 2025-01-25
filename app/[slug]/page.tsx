@@ -20,7 +20,6 @@ import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
 import { loadAgreements } from "@/lib/agreements";
 import { Agreement } from "@/lib/agreements";
 import { Metadata } from "next";
-import Head from "next/head";
 
 type AgreementParams = {
   slug: string;
@@ -53,12 +52,6 @@ export default async function AgreementPage(props: AgreementProps) {
 
   return (
     <Page>
-      <Head>
-        <link
-          rel="icon"
-          href={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.documents[0].thumbnails.w64}`}
-        />
-      </Head>
       <HeaderMenu
         href="https://kollektivavtal.github.io"
         text="kollektivavtal.github.io"
