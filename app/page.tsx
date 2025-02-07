@@ -1,10 +1,4 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@arbetsmarknad/components/Breadcrumb";
+import { Breadcrumbs } from "@arbetsmarknad/components/Breadcrumb";
 import {
   DocumentList,
   DocumentItem,
@@ -13,10 +7,7 @@ import {
   DocumentDescription,
 } from "@arbetsmarknad/components/DocumentList";
 import { Container } from "@arbetsmarknad/components/Container";
-import { HeaderMenu } from "@arbetsmarknad/components/HeaderMenu";
-import { Footer } from "@arbetsmarknad/components/Footer";
 import { Main } from "@arbetsmarknad/components/Main";
-import { Page } from "@arbetsmarknad/components/Page";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
 import { Metadata } from "next";
 import { loadAgreements } from "@/lib/agreements";
@@ -31,30 +22,14 @@ export default async function Home() {
   const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
 
   return (
-    <Page>
-      <HeaderMenu
-        href="https://kollektivavtal.github.io"
-        text="kollektivavtal.github.io"
-      />
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="https://arbetsmarknad.github.io">
-              Arbetsmarknad
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Kollektivavtal</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${process.env.NEXT_PUBLIC_YEAR}`}>
-              {process.env.NEXT_PUBLIC_YEAR}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <>
+      <Breadcrumbs>
+        {{
+          "https://arbetsmarknad.github.io/": "Arbetsmarknad",
+          "/": "Kollektivavtal",
+          [`/${process.env.NEXT_PUBLIC_YEAR}`]: `${process.env.NEXT_PUBLIC_YEAR}`,
+        }}
+      </Breadcrumbs>
       <Main>
         <Container className="flex flex-col items-start space-y-8">
           <TopLevelHeading
@@ -83,13 +58,6 @@ export default async function Home() {
           </section>
         </Container>
       </Main>
-      <Footer
-        sourceCode={[
-          `kollektivavtal/${process.env.NEXT_PUBLIC_YEAR}`,
-          "kollektivavtal/autoindex",
-          "arbetsmarknad/components",
-        ]}
-      />
-    </Page>
+    </>
   );
 }

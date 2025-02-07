@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Page } from "@arbetsmarknad/components/Page";
+import { HeaderMenu } from "@arbetsmarknad/components/HeaderMenu";
+import { Footer } from "@arbetsmarknad/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +30,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Page>
+          <HeaderMenu
+            href="https://kollektivavtal.github.io"
+            text="kollektivavtal.github.io"
+          />
+          {children}
+          <Footer
+            sourceCode={[
+              `kollektivavtal/${process.env.NEXT_PUBLIC_YEAR}`,
+              "kollektivavtal/autoindex",
+              "arbetsmarknad/components",
+            ]}
+          />
+        </Page>
       </body>
     </html>
   );

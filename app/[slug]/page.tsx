@@ -1,10 +1,4 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@arbetsmarknad/components/Breadcrumb";
+import { Breadcrumbs } from "@arbetsmarknad/components/Breadcrumb";
 import {
   DocumentList,
   DocumentItem,
@@ -13,11 +7,8 @@ import {
   DocumentDescription,
 } from "@arbetsmarknad/components/DocumentList";
 import { Container } from "@arbetsmarknad/components/Container";
-import { HeaderMenu } from "@arbetsmarknad/components/HeaderMenu";
 import { LinkList } from "@arbetsmarknad/components/LinkList";
-import { Footer } from "@arbetsmarknad/components/Footer";
 import { Main } from "@arbetsmarknad/components/Main";
-import { Page } from "@arbetsmarknad/components/Page";
 import { Section } from "@arbetsmarknad/components/Section";
 import { SectionHeading } from "@arbetsmarknad/components/SectionHeading";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
@@ -55,38 +46,16 @@ export default async function AgreementPage(props: AgreementProps) {
   const agreement = agreements.find((a) => a.slug === params.slug)!;
 
   return (
-    <Page>
-      <HeaderMenu
-        href="https://kollektivavtal.github.io"
-        text="kollektivavtal.github.io"
-      />
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="https://arbetsmarknad.github.io">
-              Arbetsmarknad
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Kollektivavtal</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${process.env.NEXT_PUBLIC_YEAR}`}>
-              {process.env.NEXT_PUBLIC_YEAR}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.slug}`}
-            >
-              {agreement.name}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <>
+      <Breadcrumbs>
+        {{
+          "https://arbetsmarknad.github.io/": "Arbetsmarknad",
+          "/": "Kollektivavtal",
+          [`/${process.env.NEXT_PUBLIC_YEAR}`]: `${process.env.NEXT_PUBLIC_YEAR}`,
+          [`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.slug}`]:
+            agreement.name,
+        }}
+      </Breadcrumbs>
       <Main>
         <Container className="flex flex-col items-start space-y-8">
           <TopLevelHeading
@@ -126,13 +95,6 @@ export default async function AgreementPage(props: AgreementProps) {
           )}
         </Container>
       </Main>
-      <Footer
-        sourceCode={[
-          `kollektivavtal/${process.env.NEXT_PUBLIC_YEAR}`,
-          "kollektivavtal/autoindex",
-          "arbetsmarknad/components",
-        ]}
-      />
-    </Page>
+    </>
   );
 }
