@@ -126,7 +126,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       const filename = basename;
       const minusExt = filename.slice(0, -4);
       const thumbnails = Object.fromEntries(
-        [64].map((size) => [`w${size}`, `${minusExt}-${size}.webp`]),
+        [64].map((size) => [`w${size}`, `${slugify(minusExt)}-${size}.webp`]),
       );
       const bytes = (await fs.stat(pdf)).size;
 
@@ -139,7 +139,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
 
       agreement.documents.push({
         name: parseResult.documentName,
-        filename,
+        filename: `${slugify(basename.slice(0, -4))}.pdf`,
         bytes,
         thumbnails,
         rank: parseResult.documentRank,
