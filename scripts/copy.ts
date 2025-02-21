@@ -1,3 +1,4 @@
+import { slugify } from "@/lib/agreements";
 import fs from "fs";
 import path from "path";
 
@@ -15,8 +16,8 @@ if (process.argv.length < 3) {
     .map((p) => path.join(src, p));
 
   for (const pdf of pdfs) {
-    const basename = path.basename(pdf);
-    const dstPath = path.join(dst, basename);
+    const basename = slugify(path.basename(pdf, ".pdf"));
+    const dstPath = path.join(dst, `${basename}.pdf`);
     fs.copyFileSync(pdf, dstPath);
     console.log(`Copied ${basename} to ${dst}`);
   }

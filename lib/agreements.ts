@@ -130,8 +130,8 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       );
       const bytes = (await fs.stat(pdf)).size;
 
-      const gitDir = path.join(process.env.SOURCE_DIRECTORY_PATH!, ".git");
-      const workTree = process.env.SOURCE_DIRECTORY_PATH!;
+      const gitDir = path.join(src, ".git");
+      const workTree = src;
       const command = `git --git-dir="${gitDir}" --work-tree="${workTree}" log --follow --diff-filter=A --format=%aI -- "${filename}"`;
       const { stdout } = await execPromise(command);
       const creationDate = stdout.trim();
