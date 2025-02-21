@@ -39,8 +39,10 @@
   },
   "scripts": {
     "build": "next build",
+    "clean": "rm -fr ./out; rm public/*.pdf; rm public/*.webp",
     "dev": "next dev",
     "lint": "next lint",
+    "quickbuild": "pnpm clean; pnpm copy ../$YEAR ./public; pnpm thumbnails public public; pnpm sitemap $YEAR ../$YEAR ./public; NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../$YEAR pnpm build",
     "start": "next start",
     "copy": "tsx ./scripts/copy.ts",
     "sitemap": "tsx ./scripts/sitemap.ts",

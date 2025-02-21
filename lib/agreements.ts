@@ -1,11 +1,8 @@
 import { promises as fs } from "fs";
-import { exec } from "child_process";
-import { promisify } from "util";
+import { execSync } from "child_process";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import { selectAll } from "unist-util-select";
-
-const execPromise = promisify(exec);
 
 import path from "path";
 
@@ -133,7 +130,8 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       const gitDir = path.join(src, ".git");
       const workTree = src;
       const command = `git --git-dir="${gitDir}" --work-tree="${workTree}" log --follow --diff-filter=A --format=%aI -- "${filename}"`;
-      const { stdout } = await execPromise(command);
+      const buffer = execSync(command);
+      const stdout = buffer.toString();
       const creationDate = stdout.trim();
       const created = new Date(creationDate);
 
