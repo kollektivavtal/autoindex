@@ -23,7 +23,7 @@ if (process.argv.length < 3) {
     const lastmod = _.max(agreement.documents.map((doc) => doc.created));
     lines.push(`<url>`);
     lines.push(
-      `<loc>https://kollektivavtal.github.io/${year}/${agreement.slug}</loc>`
+      `<loc>https://kollektivavtal.codeberg.page/${year}/${agreement.slug}</loc>`,
     );
     lines.push(`<lastmod>${lastmod?.toISOString()}</lastmod>`);
     lines.push(`</url>`);
