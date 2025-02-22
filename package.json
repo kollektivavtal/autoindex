@@ -42,7 +42,7 @@
     "clean": "rm -fr ./out; rm -f public/*.pdf; rm -f public/*.webp",
     "dev": "next dev",
     "lint": "next lint",
-    "ship": "pnpm clean && pnpm copy ../$YEAR ./public && pnpm thumbnails public public && pnpm sitemap $YEAR ../$YEAR ./public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../$YEAR pnpm build && npx gh-pages --nojekyll --no-history  --branch pages -d out --repo git@codeberg.org:kollektivavtal/$YEAR.git",
+    "ship": "pnpm clean && pnpm copy ../$YEAR ./public && pnpm thumbnails public public && pnpm sitemap $YEAR ../$YEAR ./public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../$YEAR pnpm build && npx gh-pages --nojekyll --no-history --branch pages -d out --repo git@codeberg.org:kollektivavtal/$YEAR.git",
     "start": "next start",
     "copy": "tsx ./scripts/copy.ts",
     "sitemap": "tsx ./scripts/sitemap.ts",
