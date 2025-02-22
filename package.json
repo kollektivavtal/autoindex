@@ -1,4 +1,5 @@
 {
+  "author": "Henry Catalini Smith <henry@catalinismith.com>",
   "dependencies": {
     "next": "15.1.6",
     "react": "^19.0.0",
@@ -25,6 +26,8 @@
     "unified": "^11.0.5",
     "unist-util-select": "^5.1.0"
   },
+  "homepage": "https://codeberg.org/kollektivavtal/autoindex",
+  "license": "CC0-1.0",
   "name": "@kollektivavtal/autoindex",
   "pnpm": {
     "onlyBuiltDependencies": [
