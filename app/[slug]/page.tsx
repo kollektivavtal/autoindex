@@ -49,7 +49,7 @@ export default async function AgreementPage(props: AgreementProps) {
     <>
       <Breadcrumbs>
         {{
-          "https://arbetsmarknad.github.io/": "Arbetsmarknad",
+          "https://arbetsmarknad.codeberg.page/": "Arbetsmarknad",
           "/": "Kollektivavtal",
           [`/${process.env.NEXT_PUBLIC_YEAR}`]: `${process.env.NEXT_PUBLIC_YEAR}`,
           [`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.slug}`]:
