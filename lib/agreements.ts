@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import { execSync } from "child_process";
+// import { execSync } from "child_process";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import { selectAll } from "unist-util-select";
@@ -127,13 +127,13 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       );
       const bytes = (await fs.stat(pdf)).size;
 
-      const gitDir = path.join(src, ".git");
-      const workTree = src;
-      const command = `git --git-dir="${gitDir}" --work-tree="${workTree}" log --follow --diff-filter=A --format=%aI -- "${filename}"`;
-      const buffer = execSync(command);
-      const stdout = buffer.toString();
-      const creationDate = stdout.trim();
-      const created = new Date(creationDate);
+      // const gitDir = path.join(src, ".git");
+      // const workTree = src;
+      // const command = `git --git-dir="${gitDir}" --work-tree="${workTree}" log --follow --diff-filter=A --format=%aI -- "${filename}"`;
+      // const buffer = execSync(command);
+      // const stdout = buffer.toString();
+      // const creationDate = stdout.trim();
+      // const created = new Date(creationDate);
 
       agreement.documents.push({
         name: parseResult.documentName,
@@ -142,7 +142,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
         thumbnails,
         rank: parseResult.documentRank,
         language: parseResult.documentLanguage || "sv",
-        created,
+        created: new Date(),
       });
 
       agreement.documents.sort((a, b) => a.rank - b.rank);
