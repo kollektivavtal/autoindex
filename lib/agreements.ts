@@ -71,7 +71,8 @@ export function slugify(name: string): string {
     .replace(/å/gi, "a")
     .replace(/ä/gi, "a")
     .replace(/ö/gi, "o")
-    .replace(/--+/g, "-");
+    .replace(/--+/g, "-")
+    .replace(/-$/g, "");
 }
 
 export async function loadAgreements(src: string): Promise<Agreement[]> {
@@ -92,7 +93,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       referenceMap[slugify(prevH2!)] = [];
     } else if (child.type === "list" && prevH2) {
       referenceMap[slugify(prevH2)] = selectAll("text", child).map(
-        (node) => (node as unknown as { value: string }).value,
+        (node) => (node as unknown as { value: string }).value
       );
       prevH2 = null;
     } else {
@@ -123,7 +124,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       const filename = basename;
       const minusExt = filename.slice(0, -4);
       const thumbnails = Object.fromEntries(
-        [64].map((size) => [`w${size}`, `${slugify(minusExt)}-${size}.webp`]),
+        [64].map((size) => [`w${size}`, `${slugify(minusExt)}-${size}.webp`])
       );
       const bytes = (await fs.stat(pdf)).size;
 
@@ -146,7 +147,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       });
 
       agreement.documents.sort((a, b) => a.rank - b.rank);
-    }),
+    })
   );
 
   const agreements = Array.from(agreementMap.values());
