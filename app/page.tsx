@@ -37,7 +37,7 @@ export default async function Home() {
           />
 
           <section className="flex flex-col items-start space-y-4">
-            <h2 className="text-2xl font-bold">Senaste Avtal</h2>
+            <h2 className="text-2xl font-bold">Avtal A-Ö</h2>
             <DocumentList>
               {agreements.map((agreement) => (
                 <DocumentItem key={agreement.slug}>
