@@ -12,7 +12,7 @@ import { Main } from "@arbetsmarknad/components/Main";
 import { Section } from "@arbetsmarknad/components/Section";
 import { SectionHeading } from "@arbetsmarknad/components/SectionHeading";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
-import { loadAgreements } from "@/lib/agreements";
+import { loadAgreement, loadAgreements } from "@/lib/agreements";
 import { Agreement } from "@/lib/agreements";
 import { Metadata } from "next";
 
@@ -33,8 +33,7 @@ export async function generateMetadata(
   props: AgreementProps,
 ): Promise<Metadata> {
   const params = await props.params;
-  const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
-  const agreement = agreements.find((a) => a.slug === params.slug)!;
+  const agreement = await loadAgreement(process.env.SOURCE_DIRECTORY_PATH!, params.slug);
   return {
     title: `${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`,
   };
@@ -42,8 +41,7 @@ export async function generateMetadata(
 
 export default async function AgreementPage(props: AgreementProps) {
   const params = await props.params;
-  const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
-  const agreement = agreements.find((a) => a.slug === params.slug)!;
+  const agreement = await loadAgreement(process.env.SOURCE_DIRECTORY_PATH!, params.slug);
 
   return (
     <>
