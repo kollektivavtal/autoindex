@@ -4,4 +4,4 @@ Autoindexer for collective agreements.
 
 ## License
 
-[CC-0](https://codeberg.org/kollektivavtal/autoindex/src/branch/main/license)
+[CC-0](https://github.com/kollektivavtal/autoindex/blob/main/license)

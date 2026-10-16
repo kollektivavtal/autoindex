@@ -1,5 +1,5 @@
 {
-  "author": "Henry Catalini Smith <henry@catalinismith.com>",
+  "author": "Henry Catalini Smith <henry@catalinismith.se>",
   "dependencies": {
     "next": "15.1.6",
     "react": "^19.0.0",
@@ -26,7 +26,7 @@
     "unified": "^11.0.5",
     "unist-util-select": "^5.1.0"
   },
-  "homepage": "https://codeberg.org/kollektivavtal/autoindex",
+  "homepage": "https://github.com/kollektivavtal/autoindex",
   "license": "CC0-1.0",
   "name": "@kollektivavtal/autoindex",
   "pnpm": {
@@ -45,7 +45,7 @@
     "clean": "rm -fr ./out; rm -f public/*.pdf; rm -f public/*.webp",
     "dev": "next dev",
     "lint": "next lint",
-    "ship": "pnpm clean && pnpm copy ../$YEAR ./public && pnpm thumbnails public public && pnpm sitemap $YEAR ../$YEAR ./public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../$YEAR pnpm build && npx gh-pages --nojekyll --no-history --branch pages -d out --repo git@codeberg.org:kollektivavtal/$YEAR.git",
+    "ship": "pnpm clean && pnpm copy ../$YEAR ./public && pnpm thumbnails public public && pnpm sitemap $YEAR ../$YEAR ./public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../$YEAR pnpm build && npx gh-pages --nojekyll --no-history --branch gh-pages -d out --repo git@github.com:kollektivavtal/$YEAR.git",
     "ship1": "pnpm clean && pnpm copy ../$YEAR ./public && pnpm thumbnails public public && pnpm sitemap $YEAR ../$YEAR ./public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../$YEAR pnpm build",
     "start": "next start",
     "copy": "tsx ./scripts/copy.ts",
