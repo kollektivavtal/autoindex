@@ -45,6 +45,7 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
+        NEXT_PUBLIC_DEPLOYMENT_URL: https://kollektivavtal.github.io
         NEXT_PUBLIC_YEAR: ${{ inputs.year }}
         SOURCE_DIRECTORY_PATH: ${{ github.workspace }}
         TARGET_DIRECTORY_PATH: ${{ github.action_path }}/public
