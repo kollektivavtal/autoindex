@@ -1,16 +1,10 @@
 import { Breadcrumbs } from "@arbetsmarknad/components/Breadcrumb";
-import {
-  DocumentList,
-  DocumentItem,
-  DocumentIcon,
-  DocumentLink,
-  DocumentDescription,
-} from "@arbetsmarknad/components/DocumentList";
 import { Container } from "@arbetsmarknad/components/Container";
 import { Main } from "@arbetsmarknad/components/Main";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
 import { Metadata } from "next";
 import { loadAgreements } from "@/lib/agreements";
+import { ThumbnailRow, ThumbnailRowList } from "@/components/ThumbnailCard";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -31,32 +25,26 @@ export default async function Home() {
         }}
       </Breadcrumbs>
       <Main>
-        <Container className="flex flex-col items-start space-y-8">
+        <Container className="flex flex-col items-start space-y-8 pb-16">
           <TopLevelHeading
             text={`Kollektivavtalsarkivet ${process.env.NEXT_PUBLIC_YEAR}`}
           />
 
-          <section className="flex flex-col items-start space-y-4">
+          <section className="flex w-full flex-col items-start space-y-4">
             <h2 className="text-2xl font-bold">Avtal A-Ö</h2>
-            <DocumentList>
+            <ThumbnailRowList>
               {agreements
                 .filter((agreement) => agreement.documents.length > 0)
                 .map((agreement) => (
-                <DocumentItem key={agreement.slug}>
-                  <DocumentIcon
-                    src={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.documents[0].thumbnails.w64}`}
-                  />
-                  <DocumentLink
+                  <ThumbnailRow
+                    key={agreement.slug}
                     href={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.slug}`}
-                  >
-                    {agreement.name}
-                  </DocumentLink>
-                  <DocumentDescription>
-                    {`${agreement.documents.length} dokument`}
-                  </DocumentDescription>
-                </DocumentItem>
+                    src={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.documents[0].thumbnails.w320}`}
+                    title={agreement.name}
+                    description={`${agreement.documents.length} dokument`}
+                  />
                 ))}
-            </DocumentList>
+            </ThumbnailRowList>
           </section>
         </Container>
       </Main>

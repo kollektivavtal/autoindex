@@ -2,8 +2,9 @@ import sharp from "sharp";
 import { fromPath } from "pdf2pic";
 import fs from "fs";
 import path from "path";
+import { slugify } from "@/lib/agreements";
 
-const sizes = [64];
+const sizes = [320];
 
 if (process.argv.length < 3) {
   console.log("Usage: pnpm thumbnails <src> <dst>");
@@ -19,7 +20,7 @@ if (process.argv.length < 3) {
     .map((p) => path.join(src, p));
 
   for (const pdf of pdfs) {
-    const basename = path.basename(pdf, ".pdf");
+    const basename = slugify(path.basename(pdf, ".pdf"));
     const convert = fromPath(pdf, {
       density: 100,
       saveFilename: basename,

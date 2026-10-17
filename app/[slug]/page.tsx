@@ -1,11 +1,4 @@
 import { Breadcrumbs } from "@arbetsmarknad/components/Breadcrumb";
-import {
-  DocumentList,
-  DocumentItem,
-  DocumentIcon,
-  DocumentLink,
-  DocumentDescription,
-} from "@arbetsmarknad/components/DocumentList";
 import { Container } from "@arbetsmarknad/components/Container";
 import { LinkList } from "@arbetsmarknad/components/LinkList";
 import { Main } from "@arbetsmarknad/components/Main";
@@ -14,6 +7,7 @@ import { SectionHeading } from "@arbetsmarknad/components/SectionHeading";
 import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
 import { loadAgreement, loadAgreements } from "@/lib/agreements";
 import { Agreement } from "@/lib/agreements";
+import { ThumbnailRow, ThumbnailRowList } from "@/components/ThumbnailCard";
 import { Metadata } from "next";
 
 type AgreementParams = {
@@ -77,32 +71,24 @@ export default async function AgreementPage(props: AgreementProps) {
         }}
       </Breadcrumbs>
       <Main>
-        <Container className="flex flex-col items-start space-y-8">
+        <Container className="flex flex-col items-start space-y-12 pb-16">
           <TopLevelHeading
             text={`${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`}
           />
 
-          <Section>
+          <Section className="w-full overflow-visible">
             <SectionHeading>Dokument</SectionHeading>
-            <DocumentList>
+            <ThumbnailRowList>
               {agreement.documents.map((document) => (
-                <DocumentItem key={document.rank}>
-                  <DocumentIcon
-                    src={`/${process.env.NEXT_PUBLIC_YEAR}/${document.thumbnails.w64}`}
-                  />
-                  <DocumentLink
-                    href={`/${process.env.NEXT_PUBLIC_YEAR}/${document.filename}`}
-                  >
-                    {document.name}
-                  </DocumentLink>
-                  <DocumentDescription>
-                    {["PDF", `${(document.bytes / 1024).toFixed(2)} KB`].join(
-                      ", ",
-                    )}
-                  </DocumentDescription>
-                </DocumentItem>
+                <ThumbnailRow
+                  key={document.rank}
+                  href={`/${process.env.NEXT_PUBLIC_YEAR}/${document.filename}`}
+                  src={`/${process.env.NEXT_PUBLIC_YEAR}/${document.thumbnails.w320}`}
+                  title={document.name}
+                  description={["PDF", `${(document.bytes / 1024).toFixed(2)} KB`].join(", ")}
+                />
               ))}
-            </DocumentList>
+            </ThumbnailRowList>
           </Section>
 
           {agreement.sources.length > 0 ? (
