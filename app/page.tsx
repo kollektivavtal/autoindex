@@ -39,7 +39,9 @@ export default async function Home() {
           <section className="flex flex-col items-start space-y-4">
             <h2 className="text-2xl font-bold">Avtal A-Ö</h2>
             <DocumentList>
-              {agreements.map((agreement) => (
+              {agreements
+                .filter((agreement) => agreement.documents.length > 0)
+                .map((agreement) => (
                 <DocumentItem key={agreement.slug}>
                   <DocumentIcon
                     src={`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.documents[0].thumbnails.w64}`}
@@ -53,7 +55,7 @@ export default async function Home() {
                     {`${agreement.documents.length} dokument`}
                   </DocumentDescription>
                 </DocumentItem>
-              ))}
+                ))}
             </DocumentList>
           </section>
         </Container>

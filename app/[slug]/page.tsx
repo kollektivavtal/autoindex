@@ -21,8 +21,21 @@ type AgreementParams = {
 };
 
 type AgreementProps = {
-  params: Promise<Agreement>;
+  params: Promise<AgreementParams>;
 };
+
+async function loadRouteAgreement(slug: string): Promise<Agreement> {
+  const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
+  const agreement = agreements.find((candidate) => candidate.slug === slug);
+
+  if (!agreement) {
+    throw new Error(`Unknown agreement slug: ${slug}`);
+  }
+
+  return agreement.redirectTo
+    ? agreement
+    : loadAgreement(process.env.SOURCE_DIRECTORY_PATH!, slug);
+}
 
 export async function generateStaticParams(): Promise<AgreementParams[]> {
   const agreements = await loadAgreements(process.env.SOURCE_DIRECTORY_PATH!);
@@ -33,7 +46,7 @@ export async function generateMetadata(
   props: AgreementProps,
 ): Promise<Metadata> {
   const params = await props.params;
-  const agreement = await loadAgreement(process.env.SOURCE_DIRECTORY_PATH!, params.slug);
+  const agreement = await loadRouteAgreement(params.slug);
   return {
     title: `${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`,
   };
@@ -41,7 +54,16 @@ export async function generateMetadata(
 
 export default async function AgreementPage(props: AgreementProps) {
   const params = await props.params;
-  const agreement = await loadAgreement(process.env.SOURCE_DIRECTORY_PATH!, params.slug);
+  const agreement = await loadRouteAgreement(params.slug);
+
+  if (agreement.redirectTo) {
+    return (
+      <meta
+        httpEquiv="refresh"
+        content={`0;url=/${process.env.NEXT_PUBLIC_YEAR}/${agreement.redirectTo}/`}
+      />
+    );
+  }
 
   return (
     <>

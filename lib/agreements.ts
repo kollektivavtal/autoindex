@@ -15,6 +15,7 @@ export type Agreement = {
   slug: string;
   documents: Document[];
   sources: string[];
+  redirectTo?: string;
 };
 
 export type Document = {
@@ -32,6 +33,12 @@ type ParseResult = {
   documentName: string;
   documentRank: number;
   documentLanguage?: Language;
+};
+
+type Redirect = {
+  name: string;
+  slug: string;
+  redirectTo: string;
 };
 
 export function parseFilename(filename: string): ParseResult {
@@ -78,6 +85,47 @@ export function slugify(name: string): string {
     .replace(/-$/g, "");
 }
 
+function parseRedirects(readme: string): Redirect[] {
+  const tree = unified().use(remarkParse).parse(readme);
+  const redirects: Redirect[] = [];
+
+  for (let index = 0; index < tree.children.length - 1; index += 1) {
+    const heading = tree.children[index];
+    const paragraph = tree.children[index + 1];
+
+    if (
+      heading.type !== "heading" ||
+      heading.depth !== 2 ||
+      paragraph.type !== "paragraph"
+    ) {
+      continue;
+    }
+
+    const headingText = selectAll("text", heading)
+      .map((node) => (node as unknown as { value: string }).value)
+      .join("");
+    const hasNumera = selectAll("text", paragraph).some((node) =>
+      (node as unknown as { value: string }).value.includes("Numera"),
+    );
+    const link = paragraph.children.find(
+      (node) =>
+        node.type === "link" &&
+        typeof node.url === "string" &&
+        node.url.startsWith("#"),
+    );
+
+    if (headingText && hasNumera && link?.type === "link") {
+      redirects.push({
+        name: headingText,
+        slug: slugify(headingText),
+        redirectTo: slugify(link.url.slice(1)),
+      });
+    }
+  }
+
+  return redirects;
+}
+
 let agreementsCache: Agreement[] | undefined = undefined
 
 export async function loadAgreements(src: string): Promise<Agreement[]> {
@@ -91,6 +139,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
   const readme = await fs.readFile(`${src}/readme.md`, "utf-8");
   const processor = unified().use(remarkParse);
   const tree = processor.parse(readme);
+  const redirects = parseRedirects(readme);
 
   const referenceMap: Record<string, string[]> = {};
 
@@ -156,6 +205,18 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       agreement.documents.sort((a, b) => a.rank - b.rank);
     })
   );
+
+  for (const redirect of redirects) {
+    if (!agreementMap.has(redirect.name)) {
+      agreementMap.set(redirect.name, {
+        name: redirect.name,
+        slug: redirect.slug,
+        documents: [],
+        sources: [],
+        redirectTo: redirect.redirectTo,
+      });
+    }
+  }
 
   const agreements = Array.from(agreementMap.values());
   agreementsCache = agreements
