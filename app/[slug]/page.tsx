@@ -1,10 +1,10 @@
-import { Breadcrumbs } from "@arbetsmarknad/components/Breadcrumb";
-import { Container } from "@arbetsmarknad/components/Container";
+import { Breadcrumbs } from "@svenskamodellen/components/Breadcrumb";
+import { Container } from "@svenskamodellen/components/Container";
 import { LinkList } from "@/components/LinkList";
-import { Main } from "@arbetsmarknad/components/Main";
-import { Section } from "@arbetsmarknad/components/Section";
-import { SectionHeading } from "@arbetsmarknad/components/SectionHeading";
-import { TopLevelHeading } from "@arbetsmarknad/components/TopLevelHeading";
+import { Main } from "@svenskamodellen/components/Main";
+import { Section } from "@svenskamodellen/components/Section";
+import { SectionHeading } from "@svenskamodellen/components/SectionHeading";
+import { TopLevelHeading } from "@svenskamodellen/components/TopLevelHeading";
 import { loadAgreement, loadAgreements } from "@/lib/agreements";
 import { Agreement } from "@/lib/agreements";
 import { ThumbnailRow, ThumbnailRowList } from "@/components/ThumbnailCard";
@@ -63,7 +63,7 @@ export default async function AgreementPage(props: AgreementProps) {
     <>
       <Breadcrumbs>
         {{
-          "https://arbetsmarknad.github.io/": "Arbetsmarknad",
+          "https://svenskamodellen.github.io/": "Svenska modellen",
           "/": "Kollektivavtal",
           [`/${process.env.NEXT_PUBLIC_YEAR}`]: `${process.env.NEXT_PUBLIC_YEAR}`,
           [`/${process.env.NEXT_PUBLIC_YEAR}/${agreement.slug}`]:

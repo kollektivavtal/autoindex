@@ -8,7 +8,7 @@
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
-    "@arbetsmarknad/components": "^1.4.0",
+    "@svenskamodellen/components": "^1.4.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/lodash": "^4.17.14",

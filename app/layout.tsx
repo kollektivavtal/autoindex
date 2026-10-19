@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Page } from "@arbetsmarknad/components/Page";
-import { HeaderMenu } from "@arbetsmarknad/components/HeaderMenu";
-import { Footer } from "@arbetsmarknad/components/Footer";
+import { Page } from "@svenskamodellen/components/Page";
+import { HeaderMenu } from "@svenskamodellen/components/HeaderMenu";
+import { Footer } from "@svenskamodellen/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +40,7 @@ export default function RootLayout({
             sourceCode={[
               `kollektivavtal/${process.env.NEXT_PUBLIC_YEAR}`,
               "kollektivavtal/autoindex",
-              "arbetsmarknad/components",
+              "svenskamodellen/components",
             ]}
           />
         </Page>

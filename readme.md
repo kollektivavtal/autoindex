@@ -2,7 +2,7 @@
 
 Generates a HTML index of Swedish kollektivavtal documents for a single year.
 
-All filesystem lookups in this repo assume a runtime context matching the structure defined in the README of [arbetsmarknad/workspace](https://github.com/arbetsmarknad/workspace).
+All filesystem lookups in this repo assume a runtime context matching the structure defined in the README of [svenskamodellen/workspace](https://github.com/svenskamodellen/workspace).
 
 ## Commands
 
