@@ -1,6 +1,6 @@
 import { Breadcrumbs } from "@arbetsmarknad/components/Breadcrumb";
 import { Container } from "@arbetsmarknad/components/Container";
-import { LinkList } from "@arbetsmarknad/components/LinkList";
+import { LinkList } from "@/components/LinkList";
 import { Main } from "@arbetsmarknad/components/Main";
 import { Section } from "@arbetsmarknad/components/Section";
 import { SectionHeading } from "@arbetsmarknad/components/SectionHeading";
