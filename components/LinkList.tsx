@@ -11,13 +11,13 @@ export const LinkList: FC<LinkListProps> = ({ className, links }) => {
   return (
     <ol
       className={cn(
-        "flex list-inside list-decimal flex-col gap-y-1",
+        "flex list-inside list-decimal flex-col gap-y-1 text-xs",
         className,
       )}
     >
       {links.map((link, index) => (
-        <li key={index} className="truncate">
-          <a className="truncate text-link underline" href={link}>
+        <li key={index} className="truncate text-ellipsis">
+          <a className=" text-link underline font-lilex" href={link}>
             {link}
           </a>
         </li>

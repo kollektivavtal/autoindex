@@ -13,9 +13,17 @@ type Language = "sv" | "en";
 export type Agreement = {
   name: string;
   slug: string;
+  thumbnails: Record<string, string>;
   documents: Document[];
+  forbund: Forbund[];
   sources: string[];
   redirectTo?: string;
+};
+
+export type Forbund = {
+  name: string;
+  url: string;
+  logo: string;
 };
 
 export type Document = {
@@ -85,6 +93,92 @@ export function slugify(name: string): string {
     .replace(/-$/g, "");
 }
 
+// Agreement thumbnail URLs are inferable from the agreement slug alone,
+// e.g. slug "unionen-tjanstemannaavtal" -> "unionen-tjanstemannaavtal-320.webp".
+export function agreementThumbnails(slug: string): Record<string, string> {
+  return Object.fromEntries(
+    [320].map((size) => [`w${size}`, `${slug}-${size}.webp`]),
+  );
+}
+
+function headingText(node: unknown): string {
+  return selectAll("text", node as Parameters<typeof selectAll>[1])
+    .map((n) => (n as unknown as { value: string }).value)
+    .join("");
+}
+
+// Infer a union's logo URL from its fackforbund.github.io page URL, e.g.
+// https://fackforbund.github.io/unionen/ -> .../unionen/unionen@512x512.webp
+export function inferForbundLogo(url: string): string {
+  const trimmed = url.replace(/\/+$/, "");
+  const slug = trimmed.split("/").pop() || "";
+  return `${trimmed}/${slug}@512x512.webp`;
+}
+
+// Temporarily point fackforbund links at the local dev server.
+function rewriteForbundUrl(url: string): string {
+  return url.replace(
+    /^https?:\/\/fackforbund\.github\.io/,
+    "http://localhost:3000",
+  );
+}
+
+type ReferenceMaps = {
+  forbund: Record<string, Forbund[]>;
+  sources: Record<string, string[]>;
+};
+
+// Parse a kollektivavtal readme into per-agreement "Förbund" and "Källor"
+// lists. Supports the nested format:
+//
+//   ## {Name}
+//   ### Förbund
+//   - [Unionen](https://fackforbund.github.io/unionen/)
+//   ### Källor
+//   - {source url}
+//
+// and remains backward compatible with the legacy flat format where a list
+// directly under the "## {Name}" heading is treated as sources.
+function parseReferenceMaps(readme: string): ReferenceMaps {
+  const tree = unified().use(remarkParse).parse(readme);
+  const forbund: Record<string, Forbund[]> = {};
+  const sources: Record<string, string[]> = {};
+
+  let currentSlug: string | null = null;
+  let currentSection: "forbund" | "kallor" | null = null;
+
+  for (const child of tree.children) {
+    if (child.type === "heading" && child.depth === 2) {
+      currentSlug = slugify(headingText(child));
+      currentSection = null; // legacy lists default to sources
+      forbund[currentSlug] = forbund[currentSlug] || [];
+      sources[currentSlug] = sources[currentSlug] || [];
+    } else if (child.type === "heading" && child.depth === 3 && currentSlug) {
+      const text = headingText(child).toLowerCase();
+      currentSection = text.startsWith("förbund")
+        ? "forbund"
+        : text.startsWith("källor")
+          ? "kallor"
+          : null;
+    } else if (child.type === "list" && currentSlug) {
+      if (currentSection === "forbund") {
+        forbund[currentSlug] = selectAll("link", child).map((link) => {
+          const url = rewriteForbundUrl(
+            (link as unknown as { url: string }).url,
+          );
+          return { name: headingText(link), url, logo: inferForbundLogo(url) };
+        });
+      } else {
+        sources[currentSlug] = selectAll("text", child).map(
+          (node) => (node as unknown as { value: string }).value,
+        );
+      }
+    }
+  }
+
+  return { forbund, sources };
+}
+
 function parseRedirects(readme: string): Redirect[] {
   const tree = unified().use(remarkParse).parse(readme);
   const redirects: Redirect[] = [];
@@ -137,26 +231,8 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
     .map((p) => path.join(src, p));
 
   const readme = await fs.readFile(`${src}/readme.md`, "utf-8");
-  const processor = unified().use(remarkParse);
-  const tree = processor.parse(readme);
   const redirects = parseRedirects(readme);
-
-  const referenceMap: Record<string, string[]> = {};
-
-  let prevH2: string | null = null;
-  for (const child of tree.children) {
-    if (child.type === "heading" && child.depth === 2) {
-      prevH2 = (child.children[0] as { value: string }).value;
-      referenceMap[slugify(prevH2!)] = [];
-    } else if (child.type === "list" && prevH2) {
-      referenceMap[slugify(prevH2)] = selectAll("text", child).map(
-        (node) => (node as unknown as { value: string }).value
-      );
-      prevH2 = null;
-    } else {
-      prevH2 = null;
-    }
-  }
+  const { forbund, sources } = parseReferenceMaps(readme);
 
   const agreementMap = new Map<string, Agreement>();
 
@@ -172,8 +248,10 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
         agreement = {
           name,
           slug,
+          thumbnails: agreementThumbnails(slug),
           documents: [],
-          sources: referenceMap[slug] || [],
+          forbund: forbund[slug] || [],
+          sources: sources[slug] || [],
         };
         agreementMap.set(parseResult.agreementName, agreement);
       }
@@ -211,7 +289,9 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
       agreementMap.set(redirect.name, {
         name: redirect.name,
         slug: redirect.slug,
+        thumbnails: agreementThumbnails(redirect.slug),
         documents: [],
+        forbund: [],
         sources: [],
         redirectTo: redirect.redirectTo,
       });
@@ -226,25 +306,7 @@ export async function loadAgreements(src: string): Promise<Agreement[]> {
 export async function loadAgreement(src: string, slug: string): Promise<Agreement> {
   console.log('loadAgreement')
   const readme = await fs.readFile(`${src}/readme.md`, "utf-8");
-  const processor = unified().use(remarkParse);
-  const tree = processor.parse(readme);
-
-  const referenceMap: Record<string, string[]> = {};
-  let prevH2: string | null = null;
-
-  for (const child of tree.children) {
-    if (child.type === "heading" && child.depth === 2) {
-      prevH2 = (child.children[0] as { value: string }).value;
-      referenceMap[slugify(prevH2!)] = [];
-    } else if (child.type === "list" && prevH2) {
-      referenceMap[slugify(prevH2)] = selectAll("text", child).map(
-        (node) => (node as unknown as { value: string }).value
-      );
-      prevH2 = null;
-    } else {
-      prevH2 = null;
-    }
-  }
+  const { forbund, sources } = parseReferenceMaps(readme);
 
   // Filter PDFs whose agreement name starts with the slug
   const pdfs = (await fs.readdir(src))
@@ -258,8 +320,10 @@ export async function loadAgreement(src: string, slug: string): Promise<Agreemen
   const agreement: Agreement = {
     name: agreementName,
     slug,
+    thumbnails: agreementThumbnails(slug),
     documents: [],
-    sources: referenceMap[slug] || [],
+    forbund: forbund[slug] || [],
+    sources: sources[slug] || [],
   };
 
   for (const pdf of pdfs) {

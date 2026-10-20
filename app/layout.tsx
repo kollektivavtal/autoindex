@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Page } from "@svenskamodellen/components/Page";
-import { HeaderMenu } from "@svenskamodellen/components/HeaderMenu";
 import { Footer } from "@svenskamodellen/components/Footer";
 
 const geistSans = Geist({
@@ -31,10 +30,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Page>
-          <HeaderMenu
-            canonicalUrl="https://kollektivavtal.github.io"
-            deploymentUrl="https://kollektivavtal.github.io"
-          />
           {children}
           <Footer
             sourceCode={[

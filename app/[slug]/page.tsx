@@ -71,7 +71,7 @@ export default async function AgreementPage(props: AgreementProps) {
         }}
       </Breadcrumbs>
       <Main>
-        <Container className="flex flex-col items-start space-y-12 pb-16">
+        <Container className="flex flex-col items-start space-y-16">
           <TopLevelHeading
             text={`${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`}
           />
@@ -90,6 +90,35 @@ export default async function AgreementPage(props: AgreementProps) {
               ))}
             </ThumbnailRowList>
           </Section>
+
+          {agreement.forbund.length > 0 ? (
+            <Section className="w-full overflow-visible">
+              <SectionHeading>Förbund</SectionHeading>
+              <ul className="flex w-full flex-col gap-y-2">
+                {agreement.forbund.map((forbund) => (
+                  <li key={forbund.url}>
+                    <a
+                      className="group flex items-center gap-x-3"
+                      href={forbund.url}
+                    >
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-shadow duration-150 group-hover:shadow-md dark:ring-white/40">
+                        <img
+                          alt=""
+                          className="h-full w-full object-contain"
+                          src={forbund.logo}
+                        />
+                      </div>
+                      <span className="font-bold text-link group-hover:underline font-lilex tracking-tight">
+                        {forbund.name}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+          ) : (
+            <></>
+          )}
 
           {agreement.sources.length > 0 ? (
             <Section>

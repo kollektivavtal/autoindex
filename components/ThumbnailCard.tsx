@@ -15,12 +15,12 @@ export type ThumbnailRowProps = {
 
 export function ThumbnailRow({ href, src, title, description }: ThumbnailRowProps) {
   return (
-    <li className="group relative flex items-center gap-x-4 sm:gap-x-6">
+    <li className="group relative flex flex-col items-start gap-y-2 xxs:flex-row xxs:items-center xxs:gap-x-4 sm:gap-x-6">
       <ThumbnailImage src={src} />
-      <span className="flex flex-col gap-y-1">
+      <span className="flex flex-col gap-y-1 font-lilex">
         <a
           href={href}
-          className="text-lg font-bold text-link underline after:absolute after:inset-0"
+          className="text:sm md:text-lg lg:text-2xl font-bold text-link underline after:absolute after:inset-0 tracking-tighter break-all"
         >
           {title}
         </a>
