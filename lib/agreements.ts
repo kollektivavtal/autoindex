@@ -115,14 +115,6 @@ export function inferForbundLogo(url: string): string {
   return `${trimmed}/${slug}@512x512.webp`;
 }
 
-// Temporarily point fackforbund links at the local dev server.
-function rewriteForbundUrl(url: string): string {
-  return url.replace(
-    /^https?:\/\/fackforbund\.github\.io/,
-    "http://localhost:3000",
-  );
-}
-
 type ReferenceMaps = {
   forbund: Record<string, Forbund[]>;
   sources: Record<string, string[]>;
@@ -163,9 +155,7 @@ function parseReferenceMaps(readme: string): ReferenceMaps {
     } else if (child.type === "list" && currentSlug) {
       if (currentSection === "forbund") {
         forbund[currentSlug] = selectAll("link", child).map((link) => {
-          const url = rewriteForbundUrl(
-            (link as unknown as { url: string }).url,
-          );
+          const url = (link as unknown as { url: string }).url;
           return { name: headingText(link), url, logo: inferForbundLogo(url) };
         });
       } else {
