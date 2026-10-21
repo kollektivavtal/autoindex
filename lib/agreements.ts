@@ -298,10 +298,13 @@ export async function loadAgreement(src: string, slug: string): Promise<Agreemen
   const readme = await fs.readFile(`${src}/readme.md`, "utf-8");
   const { forbund, sources } = parseReferenceMaps(readme);
 
-  // Filter PDFs whose agreement name starts with the slug
+  // Filter PDFs whose agreement name slug matches exactly. An exact match is
+  // required because one agreement's slug can be a prefix of another's, e.g.
+  // "almega-spel" is a prefix of
+  // "almega-spel-och-internationella-kasinon-tjanstemannaavtal".
   const pdfs = (await fs.readdir(src))
     .filter((p) => p.endsWith(".pdf"))
-    .filter((p) => slugify(parseFilename(p).agreementName).startsWith(slug))
+    .filter((p) => slugify(parseFilename(p).agreementName) === slug)
     .map((p) => path.join(src, p));
 
   // Use the first PDF to get the agreement name
