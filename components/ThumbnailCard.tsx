@@ -20,12 +20,12 @@ export function ThumbnailRow({ href, src, title, description }: ThumbnailRowProp
       <span className="flex flex-col gap-y-1 font-lilex">
         <a
           href={href}
-          className="text:sm md:text-lg lg:text-2xl font-bold text-link underline after:absolute after:inset-0 tracking-tighter break-all"
+          className="section-heading font-bold text-link underline after:absolute after:inset-0 tracking-tighter break-all"
         >
           {title}
         </a>
         {description && (
-          <span className="text-slate-500 dark:text-slate-400">
+          <span className="text-slate-500 dark:text-slate-300 body-text">
             {description}
           </span>
         )}
@@ -35,5 +35,5 @@ export function ThumbnailRow({ href, src, title, description }: ThumbnailRowProp
 }
 
 export function ThumbnailRowList({ children }: { children: React.ReactNode }) {
-  return <ol className="flex w-full flex-col gap-y-6">{children}</ol>;
+  return <ol className="flex w-full flex-col gap-y-8">{children}</ol>;
 }

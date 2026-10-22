@@ -3,7 +3,6 @@ import { Container } from "@svenskamodellen/components/Container";
 import { LinkList } from "@/components/LinkList";
 import { Main } from "@svenskamodellen/components/Main";
 import { Section } from "@svenskamodellen/components/Section";
-import { SectionHeading } from "@svenskamodellen/components/SectionHeading";
 import { TopLevelHeading } from "@svenskamodellen/components/TopLevelHeading";
 import { loadAgreement, loadAgreements } from "@/lib/agreements";
 import { Agreement } from "@/lib/agreements";
@@ -71,13 +70,13 @@ export default async function AgreementPage(props: AgreementProps) {
         }}
       </Breadcrumbs>
       <Main>
-        <Container className="flex flex-col items-start space-y-16">
+        <Container className="flex flex-col items-start space-y-8 pb-8">
           <TopLevelHeading
             text={`${agreement.name} ${process.env.NEXT_PUBLIC_YEAR}`}
           />
 
           <Section className="w-full overflow-visible">
-            <SectionHeading>Dokument</SectionHeading>
+            <h2 className="section-heading">Dokument</h2>
             <ThumbnailRowList>
               {agreement.documents.map((document) => (
                 <ThumbnailRow
@@ -93,10 +92,10 @@ export default async function AgreementPage(props: AgreementProps) {
 
           {agreement.forbund.length > 0 ? (
             <Section className="w-full overflow-visible">
-              <SectionHeading>Förbund</SectionHeading>
-              <ul className="flex w-full flex-col gap-y-2">
+              <h2 className="section-heading">Förbund</h2>
+              <ul className="flex w-full flex-col gap-y-4">
                 {agreement.forbund.map((forbund) => (
-                  <li key={forbund.url}>
+                  <li key={forbund.url} className="max-w-prose">
                     <a
                       className="group flex items-center gap-x-3"
                       href={forbund.url}
@@ -108,7 +107,7 @@ export default async function AgreementPage(props: AgreementProps) {
                           src={forbund.logo}
                         />
                       </div>
-                      <span className="font-bold text-link group-hover:underline font-lilex tracking-tight">
+                      <span className="font-bold text-link underline ">
                         {forbund.name}
                       </span>
                     </a>
@@ -122,7 +121,7 @@ export default async function AgreementPage(props: AgreementProps) {
 
           {agreement.sources.length > 0 ? (
             <Section>
-              <SectionHeading>Källor</SectionHeading>
+              <h2 className="section-heading">Källor</h2>
               <LinkList links={agreement.sources} />
             </Section>
           ) : (

@@ -5,7 +5,6 @@ import { TopLevelHeading } from "@svenskamodellen/components/TopLevelHeading";
 import { Metadata } from "next";
 import { loadAgreements } from "@/lib/agreements";
 import { ThumbnailRow, ThumbnailRowList } from "@/components/ThumbnailCard";
-import { SectionHeading } from "@svenskamodellen/components/SectionHeading";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,13 +25,13 @@ export default async function Home() {
         }}
       </Breadcrumbs>
       <Main>
-        <Container className="flex flex-col items-start space-y-16">
+        <Container className="flex flex-col items-start space-y-8 pb-8">
           <TopLevelHeading
             text={`Kollektivavtalsarkivet ${process.env.NEXT_PUBLIC_YEAR}`}
+            subtext={`Avtal A-Ö för året ${process.env.NEXT_PUBLIC_YEAR}`}
           />
 
-          <section className="flex w-full flex-col items-start space-y-4">
-            <SectionHeading>Avtal A-Ö</SectionHeading>
+          <section className="flex w-full flex-col items-start space-y-8">
             <ThumbnailRowList>
               {agreements
                 .filter((agreement) => agreement.documents.length > 0)
