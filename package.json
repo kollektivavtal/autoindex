@@ -37,15 +37,14 @@
     }
   },
   "scripts": {
-    "build": "pnpm clean && pnpm copy ../kollektivavtal-$YEAR ./public && pnpm thumbnails public public && pnpm sitemap $YEAR ../kollektivavtal-$YEAR ./public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../kollektivavtal-$YEAR next build",
+    "build": "pnpm clean && pnpm copy ../kollektivavtal-$YEAR ./public && pnpm thumbnails public public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../kollektivavtal-$YEAR next build",
     "deploy": "npx gh-pages --nojekyll --no-history --branch gh-pages -d out --repo git@github.com:kollektivavtal/$YEAR.git",
     "clean": "rm -fr ./out; rm -f public/*.pdf; rm -f public/*.webp",
-    "dev": "pnpm clean && pnpm copy ../kollektivavtal-$YEAR ./public && pnpm thumbnails public public && pnpm sitemap $YEAR ../kollektivavtal-$YEAR ./public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../kollektivavtal-$YEAR next dev",
+    "dev": "pnpm clean && pnpm copy ../kollektivavtal-$YEAR ./public && pnpm thumbnails public public && NEXT_PUBLIC_YEAR=$YEAR SOURCE_DIRECTORY_PATH=../kollektivavtal-$YEAR next dev",
     "lint": "next lint",
     "ship": "pnpm build && pnpm deploy",
     "start": "next start",
     "copy": "tsx ./scripts/copy.ts",
-    "sitemap": "tsx ./scripts/sitemap.ts",
     "thumbnails": "tsx ./scripts/thumbnails.ts"
   },
   "version": "0.1.0"
