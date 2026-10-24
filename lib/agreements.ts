@@ -24,6 +24,7 @@ export type Forbund = {
   name: string;
   url: string;
   logo: string;
+  note?: string;
 };
 
 export type Document = {
@@ -107,6 +108,26 @@ function headingText(node: unknown): string {
     .join("");
 }
 
+function listItemNote(item: unknown, link: unknown): string | undefined {
+  const paragraph = (item as { children?: unknown[] }).children?.find(
+    (child) => (child as { type?: string }).type === "paragraph",
+  ) as { children?: unknown[] } | undefined;
+  const children = paragraph?.children || [];
+  const linkIndex = children.indexOf(link);
+
+  if (linkIndex < 0) {
+    return undefined;
+  }
+
+  const note = children
+    .slice(linkIndex + 1)
+    .map((child) => headingText(child))
+    .join("")
+    .trim();
+
+  return note || undefined;
+}
+
 // Infer a union's logo URL from its fackforbund.github.io page URL, e.g.
 // https://fackforbund.github.io/unionen/ -> .../unionen/unionen@512x512.webp
 export function inferForbundLogo(url: string): string {
@@ -154,9 +175,26 @@ function parseReferenceMaps(readme: string): ReferenceMaps {
           : null;
     } else if (child.type === "list" && currentSlug) {
       if (currentSection === "forbund") {
-        forbund[currentSlug] = selectAll("link", child).map((link) => {
+        const items = (child.children || []) as unknown[];
+        forbund[currentSlug] = items.flatMap((item) => {
+          const link = selectAll(
+                      "link",
+                      item as Parameters<typeof selectAll>[1],
+                    )[0];
+          if (!link) {
+            return [];
+          }
+
           const url = (link as unknown as { url: string }).url;
-          return { name: headingText(link), url, logo: inferForbundLogo(url) };
+          const note = listItemNote(item, link);
+          return [
+            {
+              name: headingText(link),
+              url,
+              logo: inferForbundLogo(url),
+              ...(note ? { note } : {}),
+            },
+          ];
         });
       } else {
         sources[currentSlug] = selectAll("text", child).map(

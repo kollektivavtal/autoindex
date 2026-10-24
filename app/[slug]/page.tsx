@@ -107,8 +107,15 @@ export default async function AgreementPage(props: AgreementProps) {
                           src={forbund.logo}
                         />
                       </div>
-                      <span className="font-bold text-link underline ">
-                        {forbund.name}
+                      <span className="flex flex-col">
+                        <span className="font-bold text-link underline">
+                          {forbund.name}
+                        </span>
+                        {forbund.note && (
+                          <span className="body-text text-slate-500 dark:text-slate-100">
+                            {forbund.note}
+                          </span>
+                        )}
                       </span>
                     </a>
                   </li>
