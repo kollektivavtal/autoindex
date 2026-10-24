@@ -95,29 +95,30 @@ export default async function AgreementPage(props: AgreementProps) {
               <h2 className="section-heading">Förbund</h2>
               <ul className="flex w-full flex-col gap-y-4">
                 {agreement.forbund.map((forbund) => (
-                  <li key={forbund.url} className="max-w-prose">
-                    <a
-                      className="group flex items-center gap-x-3"
-                      href={forbund.url}
-                    >
-                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-shadow duration-150 group-hover:shadow-md dark:ring-white/40">
-                        <img
-                          alt=""
-                          className="h-full w-full object-contain"
-                          src={forbund.logo}
-                        />
-                      </div>
-                      <span className="flex flex-col">
-                        <span className="font-bold text-link underline">
-                          {forbund.name}
+                  <li
+                    key={forbund.url}
+                    className="group relative flex max-w-prose flex-col items-start gap-y-2 xxs:flex-row xxs:items-center xxs:gap-x-4 sm:gap-x-6"
+                  >
+                    <div className="aspect-square w-24 shrink-0 overflow-hidden rounded-md bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-shadow duration-150 group-hover:shadow-md sm:w-40 dark:ring-white/40">
+                      <img
+                        alt=""
+                        className="h-full w-full object-contain"
+                        src={forbund.logo}
+                      />
+                    </div>
+                    <span className="flex flex-col">
+                      <a
+                        className="section-heading text-link underline after:absolute after:inset-0"
+                        href={forbund.url}
+                      >
+                        {forbund.name}
+                      </a>
+                      {forbund.note && (
+                        <span className="body-text text-slate-500 dark:text-slate-100">
+                          {forbund.note}
                         </span>
-                        {forbund.note && (
-                          <span className="body-text text-slate-500 dark:text-slate-100">
-                            {forbund.note}
-                          </span>
-                        )}
-                      </span>
-                    </a>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
