@@ -2,7 +2,7 @@ import sharp from "sharp";
 import { fromPath } from "pdf2pic";
 import fs from "fs";
 import path from "path";
-import { parseFilename, slugify } from "@/lib/agreements";
+import { slugify } from "@/lib/agreements";
 
 const sizes = [320];
 
@@ -43,10 +43,14 @@ if (process.argv.length < 3) {
     }
     fs.rmSync(output.path!);
 
-    const { agreementName, documentRank } = parseFilename(
-      path.basename(pdf),
-    );
-    const agreementSlug = slugify(agreementName);
+    // The copy step slugifies filenames, turning e.g.
+    // `Fastigo I-avtalet (1) Kollektivavtal.pdf` into
+    // `fastigo-i-avtalet-1-kollektivavtal.pdf`. Recover the agreement slug and
+    // rank from that normalized filename so the canonical agreement thumbnail
+    // is still generated.
+    const rankMatch = basename.match(/^(.+)-(\d+)-.+$/);
+    const agreementSlug = rankMatch ? rankMatch[1] : basename;
+    const documentRank = rankMatch ? Number(rankMatch[2]) : 0;
     const current = agreementPrimary.get(agreementSlug);
     if (!current || documentRank < current.rank) {
       agreementPrimary.set(agreementSlug, { pdf, rank: documentRank });
