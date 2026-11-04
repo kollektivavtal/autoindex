@@ -1,21 +1,22 @@
 # kollektivavtal-autoindex
 
-Generates a HTML index of Swedish kollektivavtal documents for a single year.
+Publishes the PDF and thumbnail assets used by the Swedish collective agreement archive for a single year. The presentation layer lives in [kollektivavtal-homepage](https://github.com/kollektivavtal/homepage).
 
-All filesystem lookups in this repo assume a runtime context matching the structure defined in the README of [svenskamodellen/workspace](https://github.com/svenskamodellen/workspace).
+The action copies PDFs with their original filenames and generates a `-320.webp` thumbnail from the first page of each PDF. It does not build or deploy a separate HTML index.
 
-## Commands
+## Local usage
 
-- Run `YEAR=2023 pnpm dev` and open http://localhost:3000/2023/ for the dev server
-- Run `YEAR=2023 pnpm build` to run a production build
-- Run `pnpm deploy` to deploy the latest build to production
-- Run `YEAR=2023 pnpm ship` to run build + deploy in sequence
+```sh
+bash ./scripts/publish-assets.sh ../kollektivavtal-2023 ./public
+```
 
 ## Dependencies
 
+```sh
+brew install graphicsmagick ghostscript webp
 ```
-brew install graphicsmagick ghostscript
-```
+
+The GitHub Action installs GraphicsMagick; Ghostscript and `cwebp` must also be available on the runner.
 
 ## License
 
